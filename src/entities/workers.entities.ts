@@ -1,9 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, OneToMany, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Monthly } from './monthly.entities';
 
 @Entity({
   name: 'workers',
 })
-export class workers {
+export class Workers {
   @PrimaryGeneratedColumn('uuid')
   workers_id: string;
 
@@ -41,4 +42,7 @@ export class workers {
     name: 'password',
   })
   images: string;
+
+  @OneToMany(() => Monthly, (monthly) => monthly.workers)
+  monthly: Monthly[];
 }

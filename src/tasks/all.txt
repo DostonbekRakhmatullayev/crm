@@ -1,0 +1,21 @@
+admin == admin bir nechta buladi 
+supperAdmin == supperAdmin bitta buladi 
+categories == categories 
+monthly == oylik ishchilardiki
+provinces ==  viloyatlar 
+workers ==   ishchilar
+
+provinces {
+  Toshkent = 'Toshkent',
+  Andijon = 'Andijon',
+  Buxoro = 'Buxoro',
+  Fargona = "Farg'ona",
+  Jizzax = 'Jizzax',
+  Xorazm = 'Xorazm',
+  Namangan = 'Namangan',
+  Navoiy = 'Navoiy',
+  Qashqadaryo = 'Qashqadaryo',
+  Samarqand = 'Samarqand',
+  Surxondaryo = 'Surxondaryo',
+  Qoraqalpogiston = "Qoraqalpog'iston",
+}
