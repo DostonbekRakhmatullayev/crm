@@ -38,7 +38,7 @@ export class SupperAdmin {
 
   @Column({
     type: 'text',
-    name: 'password',
+    name: 'images',
   })
   images: string;
 }

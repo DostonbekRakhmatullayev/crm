@@ -8,10 +8,16 @@ export class Provinces {
   provinces_id: string;
 
   @Column({
-    name: 'first_name',
+    name: 'provinces_text',
     type: 'varchar',
     length: 100,
     nullable: true,
   })
-  name: string;
+  provinces_text: string;
+
+  @Column({
+    name: 'isActive',
+    default: 'isActive',
+  })
+  isActive: string;
 }

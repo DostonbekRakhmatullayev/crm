@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity({
   name: 'admin',
@@ -15,7 +21,7 @@ export class Admin {
   })
   first_name: string;
   @Column({
-    name: 'first_name',
+    name: 'level',
     type: 'varchar',
     length: 100,
     nullable: true,
@@ -45,7 +51,19 @@ export class Admin {
 
   @Column({
     type: 'text',
-    name: 'password',
+    name: 'images',
   })
   images: string;
+
+  @Column({
+    name: 'isActive',
+    default: 'isActive',
+  })
+  isActive: string;
+
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  updatedAt: Date;
 }

@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Workers } from './workers.entities';
 
 @Entity({
@@ -9,12 +16,28 @@ export class Monthly {
   provinces_id: string;
 
   @Column({
-    name: 'first_name',
-    type: 'varchar',
-    length: 100,
-    nullable: true,
+    name: 'monthly_name',
   })
-  name: string;
+  monthly_name: number;
+
+  @Column({
+    name: 'isActive',
+    default: 'isActive',
+  })
+  isActive: string;
+
+  @Column({
+    name: 'penalty',
+    default: 0,
+  })
+  penalty: number;
+
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  updatedAt: Date;
+
   @ManyToOne(() => Workers, (workers) => workers.monthly)
   workers: Workers;
 }

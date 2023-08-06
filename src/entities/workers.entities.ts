@@ -1,4 +1,13 @@
-import { Entity, OneToMany, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  ManyToOne,
+  OneToMany,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Categories } from './categories.entities';
 import { Monthly } from './monthly.entities';
 
 @Entity({
@@ -39,10 +48,25 @@ export class Workers {
 
   @Column({
     type: 'text',
-    name: 'password',
+    name: 'images',
   })
   images: string;
 
+  @Column({
+    name: 'isActive',
+    default: 'isActive',
+  })
+  isActive: string;
+
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  updatedAt: Date;
+
   @OneToMany(() => Monthly, (monthly) => monthly.workers)
   monthly: Monthly[];
+
+  @ManyToOne(() => Categories, (categories) => categories.workers)
+  categories: Categories;
 }
