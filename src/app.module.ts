@@ -1,9 +1,15 @@
 import { Module } from '@nestjs/common';
-import { userModule } from './modules/users/user.module';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { config } from './config';
+import { typeOrmAsyncConfig } from './config/database';
+import { userModule } from './modules/workers/user.module';
 
 @Module({
-  imports: [userModule],
-  controllers: [],
-  providers: [],
+  imports: [
+    userModule,
+    ConfigModule.forRoot(config),
+    TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
+  ],
 })
 export class AppModule {}
