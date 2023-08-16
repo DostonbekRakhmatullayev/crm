@@ -1,9 +1,9 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
-  name: 'supperadmin',
+  name: 'superadmin',
 })
-export class SupperAdmin {
+export class SuperAdmin {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
