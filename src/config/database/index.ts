@@ -15,7 +15,7 @@ export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
       port: 5432,
       database: String(process.env.DATABASE),
       entities: [SuperAdmin, Admin, Categories, Provinces, Workers, Monthly],
-      logging: true,
+      logging: false,
       synchronize: true,
     };
   },
