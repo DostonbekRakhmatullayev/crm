@@ -1,9 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  UpdateQueryBuilder,
+  PrimaryGeneratedColumn,
+  BaseEntity,
+  DeleteDateColumn,
+} from 'typeorm';
 
 @Entity({
   name: 'superadmin',
 })
-export class SuperAdmin {
+export class SuperAdmin extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -41,4 +48,6 @@ export class SuperAdmin {
     name: 'images',
   })
   images: string;
+  @DeleteDateColumn({ name: 'deleted_at' })
+  deletedAt: Date;
 }

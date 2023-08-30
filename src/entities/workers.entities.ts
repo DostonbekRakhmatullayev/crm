@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 import { Categories } from './categories.entities';
 import { Monthly } from './monthly.entities';
@@ -57,6 +58,8 @@ export class Workers {
     default: 'isActive',
   })
   isActive: string;
+  @DeleteDateColumn({ name: 'deleted_at' })
+  deletedAt: Date;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

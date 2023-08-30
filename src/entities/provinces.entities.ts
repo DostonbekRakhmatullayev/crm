@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, DeleteDateColumn } from 'typeorm';
 
 @Entity({
   name: 'provinces',
@@ -20,4 +20,7 @@ export class Provinces {
     default: 'isActive',
   })
   isActive: string;
+
+  @DeleteDateColumn({ name: 'deleted_at' })
+  deletedAt: Date;
 }

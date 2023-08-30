@@ -4,6 +4,7 @@ import * as cors from 'cors';
 import { ErrorHandle } from './filter/custom.exetepsion.filter';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 

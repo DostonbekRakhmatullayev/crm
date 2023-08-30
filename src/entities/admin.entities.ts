@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 
 @Entity({
@@ -60,6 +61,8 @@ export class Admin {
     default: 'isActive',
   })
   isActive: string;
+  @DeleteDateColumn({ name: 'deleted_at' })
+  deletedAt: Date;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
