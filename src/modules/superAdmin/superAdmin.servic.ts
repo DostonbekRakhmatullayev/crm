@@ -1,7 +1,6 @@
-import { Injectable } from '@nestjs/common';
 import { SuperAdmin } from 'src/entities/superAdmin.entities';
+import { Injectable } from '@nestjs/common';
 import jwt from 'src/utils/jwt';
-// import { SuperAdmin } from '../../entities/superAdmin.entities';
 
 @Injectable()
 export class SuperAdminServic {
@@ -59,7 +58,9 @@ export class SuperAdminServic {
     const user = await SuperAdmin.findOne({
       where: { password, email },
     });
+
     const token = jwt.sign({ password: user.password, email: user.email });
+
     return {
       status: 201,
       message: 'Success',
@@ -67,10 +68,34 @@ export class SuperAdminServic {
     };
   }
 
-  async putAdmin(req, file, Params) {
+  async putAdmin(req, file) {
     const { first_name, last_name, email, password } = req.body;
-    const { filename } = file;
-    const { id } = Params;
+
+    const { token } = req.headers;
+    if (!token) {
+      return {
+        status: 400,
+        message: 'Token is not found',
+      };
+    }
+
+    const newTokenVerify = jwt.verify(token);
+
+    const users = await SuperAdmin.findOne({
+      where: {
+        password: newTokenVerify.password,
+        email: newTokenVerify.email,
+      },
+    });
+
+    if (!users) {
+      return {
+        status: 404,
+        message: 'Users is not found',
+      };
+    }
+
+    const filename = file?.filename || users.images.split('/')[2];
 
     const data = await SuperAdmin.createQueryBuilder()
       .update(SuperAdmin)
@@ -81,7 +106,7 @@ export class SuperAdminServic {
         password,
         images: `/img/${filename}`,
       })
-      .where({ id })
+      .where({ id: users.id })
       .execute();
 
     return {

@@ -1,36 +1,43 @@
-import { Controller } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Req,
+  Post,
+  UseInterceptors,
+  Put,
+  UploadedFile,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { multerOptions } from 'src/helpers/multer';
 import { CategoriesServic } from './categories.servic';
-
-@Controller('/super')
+import { ChikTokenMiddleware } from 'src/middleware/chiktoken.middleware';
+import { MiddlewareConsumer } from '@nestjs/common/interfaces';
+@Controller()
 export class CategoriesController {
   constructor(private readonly categoriesServic: CategoriesServic) {}
 
-  //   @Get('/admin')
-  //   async findOne(@Req() req: Request) {
-  //     return await this.superAdminServic.findOne(req);
-  //   }
+  @Get('/categories')
+  async findAll(@Req() req: Request) {
+    return await this.categoriesServic.findAll();
+  }
 
-  //   @Post('/admin')
-  //   @UseInterceptors(FileInterceptor('images', multerOptions))
-  //   async uploadImage(
-  //     @UploadedFile() file: Express.Multer.File,
-  //     @Req() superAdmin: SuperAdminValidator,
-  //   ) {
-  //     return await this.superAdminServic.uploadImage(file, superAdmin);
-  //   }
+  @Post('/categories')
+  @UseInterceptors(FileInterceptor('images', multerOptions))
+  async uploadImage(
+    @UploadedFile() file: Express.Multer.File,
+    @Req() superAdmin,
+  ) {
+    return await this.categoriesServic.uploadImage(file, superAdmin);
+  }
 
-  //   @Put('/admin/:id')
-  //   @UseInterceptors(FileInterceptor('images', multerOptions))
-  //   async putAdmin(
-  //     @UploadedFile() file: Express.Multer.File,
-  //     @Req() req: NewsUpdateDto,
-  //     @Param() Params,
-  //   ) {
-  //     return await this.superAdminServic.putAdmin(req, file, Params);
-  //   }
+  @Put('/categories')
+  @UseInterceptors(FileInterceptor('images', multerOptions))
+  async putAdmin(@UploadedFile() file?: Express.Multer.File, @Req() req?) {
+    return await this.categoriesServic.putAdmin(req, file);
+  }
 
-  //   @Post('/login')
-  //   async adminLogin(@Req() body: SuperAdminValidator) {
-  //     return await this.superAdminServic.adminLogin(body);
-  //   }
+  @Post('/categories')
+  async adminLogin(@Req() body) {
+    return await this.categoriesServic.adminLogin(body);
+  }
 }

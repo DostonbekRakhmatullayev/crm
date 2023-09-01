@@ -13,6 +13,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { SuperAdminValidator } from './dto/superadmin.create.dto';
 import { multerOptions } from 'src/helpers/multer';
 import { NewsUpdateDto } from './dto/superadmin.put.dto';
+import { LoginValidator } from './dto/login.dto';
 @Controller('/super')
 export class SuperAdminController {
   constructor(private readonly superAdminServic: SuperAdminServic) {}
@@ -31,18 +32,17 @@ export class SuperAdminController {
     return await this.superAdminServic.uploadImage(file, superAdmin);
   }
 
-  @Put('/admin/:id')
+  @Put('/admin')
   @UseInterceptors(FileInterceptor('images', multerOptions))
   async putAdmin(
-    @UploadedFile() file: Express.Multer.File,
-    @Req() req: NewsUpdateDto,
-    @Param() Params,
+    @UploadedFile() file?: Express.Multer.File,
+    @Req() req?: NewsUpdateDto,
   ) {
-    return await this.superAdminServic.putAdmin(req, file, Params);
+    return await this.superAdminServic.putAdmin(req, file);
   }
 
   @Post('/login')
-  async adminLogin(@Req() body: SuperAdminValidator) {
+  async adminLogin(@Req() body: LoginValidator) {
     return await this.superAdminServic.adminLogin(body);
   }
 }
