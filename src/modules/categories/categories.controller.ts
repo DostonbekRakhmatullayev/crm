@@ -1,17 +1,8 @@
-import {
-  Controller,
-  Get,
-  Req,
-  Post,
-  UseInterceptors,
-  Put,
-  UploadedFile,
-} from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { multerOptions } from 'src/helpers/multer';
+import { Controller, Get, Req, Post, Put, Param, Delete } from '@nestjs/common';
+
 import { CategoriesServic } from './categories.servic';
-import { ChikTokenMiddleware } from 'src/middleware/chiktoken.middleware';
-import { MiddlewareConsumer } from '@nestjs/common/interfaces';
+import { CategoriesCreateDto } from './dto/categories.create.dto';
+import { categoriesUpdateDto } from './dto/categories.put.dto';
 @Controller()
 export class CategoriesController {
   constructor(private readonly categoriesServic: CategoriesServic) {}
@@ -22,22 +13,20 @@ export class CategoriesController {
   }
 
   @Post('/categories')
-  @UseInterceptors(FileInterceptor('images', multerOptions))
-  async uploadImage(
-    @UploadedFile() file: Express.Multer.File,
-    @Req() superAdmin,
+  async categoriesCreate(@Req() req: CategoriesCreateDto) {
+    return await this.categoriesServic.categoriesCreate(req);
+  }
+
+  @Put('/categories/:id')
+  async categoriesUpdate(
+    @Param() param: string,
+    @Req() req?: categoriesUpdateDto,
   ) {
-    return await this.categoriesServic.uploadImage(file, superAdmin);
+    return await this.categoriesServic.categoriesUpdate(param, req);
   }
 
-  @Put('/categories')
-  @UseInterceptors(FileInterceptor('images', multerOptions))
-  async putAdmin(@UploadedFile() file?: Express.Multer.File, @Req() req?) {
-    return await this.categoriesServic.putAdmin(req, file);
-  }
-
-  @Post('/categories')
-  async adminLogin(@Req() body) {
-    return await this.categoriesServic.adminLogin(body);
+  @Delete('/categories/:id')
+  async categoriesDelete(@Param() param: string) {
+    return await this.categoriesServic.categoriesDelete(param);
   }
 }

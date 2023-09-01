@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { Categories } from 'src/entities/categories.entities';
 import { SuperAdmin } from 'src/entities/superAdmin.entities';
 import jwt from 'src/utils/jwt';
@@ -13,106 +13,89 @@ export class CategoriesServic {
       return categories;
     } catch (error) {
       console.log(error.message);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
-  async uploadImage(file, superAdmin) {
+  async categoriesCreate(req) {
     try {
-      const { first_name, last_name, email, password } = superAdmin.body;
+      const { categories_name } = req?.body;
+      if (!categories_name) {
+        throw new HttpException(
+          'categories_name is not found',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
 
-      const {
-        raw: [{ id }],
-      } = await SuperAdmin.createQueryBuilder()
+      const { raw } = await Categories.createQueryBuilder()
         .insert()
-        .into(SuperAdmin)
+        .into(Categories)
         .values({
-          first_name,
-          last_name,
-          email,
-          password,
-          images: `/img/${file.filename}`,
+          categories_name,
         })
+        .returning(['categories_name'])
         .execute();
 
-      const data = await SuperAdmin.findOne({
-        where: { id },
-      });
-
-      const token = jwt.sign({ password: data.password, email: data.email });
-
-      if (id) {
-        return {
-          status: 201,
-          message: 'Success',
-          token: token,
-        };
-      }
+      return {
+        status: 201,
+        message: 'Success',
+        data: raw,
+      };
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
-  async adminLogin(req) {
-    const { email, password } = req.body;
+  async categoriesUpdate(param, req) {
+    try {
+      const { categories_name } = req?.body;
+      if (!categories_name) {
+        throw new HttpException(
+          'categories_name is not found',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
 
-    const user = await SuperAdmin.findOne({
-      where: { password, email },
-    });
-    const token = jwt.sign({ password: user.password, email: user.email });
-    return {
-      status: 201,
-      message: 'Success',
-      token: token,
-    };
+      const { id } = param;
+
+      const { raw } = await Categories.createQueryBuilder()
+        .update(Categories)
+        .set({ categories_name })
+        .where({ id })
+        .returning(['categories_name'])
+        .execute();
+
+      return {
+        status: 200,
+        message: 'Success',
+        data: raw,
+      };
+    } catch (error) {
+      console.log(error.message);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
-  async putAdmin(req, file) {
-    const { first_name, last_name, email, password } = req.body;
-    // const filename = file?.filename;
+  async categoriesDelete(param) {
+    try {
+      const { id } = param;
 
-    const { token } = req.headers;
-    if (!token) {
+      const { raw } = await Categories.createQueryBuilder()
+        .softDelete()
+        .from(Categories)
+        .where({ id })
+        .returning(['categories_name'])
+        .execute();
+
       return {
-        status: 400,
-        message: 'Token is not found',
+        status: 200,
+        message: 'Success',
+        data: raw,
       };
+    } catch (error) {
+      console.log(error.message);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
-
-    const newTokenVerify = jwt.verify(token);
-
-    console.log(newTokenVerify);
-
-    const users = await SuperAdmin.findOne({
-      where: {
-        password: newTokenVerify.password,
-        email: newTokenVerify.email,
-      },
-    });
-
-    if (!users) {
-      return {
-        status: 404,
-        message: 'Users is not found',
-      };
-    }
-
-    const filename = file?.filename || users.images.split('/')[2];
-
-    const data = await SuperAdmin.createQueryBuilder()
-      .update(SuperAdmin)
-      .set({
-        first_name,
-        email,
-        last_name,
-        password,
-        images: `/img/${filename}`,
-      })
-      .where({ id: users.id })
-      .execute();
-
-    return {
-      status: 200,
-      message: 'Success',
-    };
   }
 }

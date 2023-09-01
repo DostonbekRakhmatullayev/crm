@@ -11,6 +11,6 @@ import { CategoriesServic } from './categories.servic';
 })
 export class CategoriesModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(ChikTokenMiddleware).forRoutes('*');
+    consumer.apply(ChikTokenMiddleware).forRoutes('/categories');
   }
 }
