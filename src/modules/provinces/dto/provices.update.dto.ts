@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class categoriesUpdateDto {
+export class ProvicesUpdateDto {
   @IsString()
-  readonly categories_name?: string;
+  readonly provinces_text?: string;
 }

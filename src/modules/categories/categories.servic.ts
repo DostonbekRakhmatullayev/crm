@@ -8,7 +8,9 @@ import jwt from 'src/utils/jwt';
 export class CategoriesServic {
   async findAll() {
     try {
-      const categories = await Categories.find();
+      const categories = await Categories.find({
+        select: { id: true, categories_name: true },
+      });
 
       return categories;
     } catch (error) {

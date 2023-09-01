@@ -1,117 +1,119 @@
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import { Categories } from 'src/entities/categories.entities';
+import { Provinces } from 'src/entities/provinces.entities';
 import { SuperAdmin } from 'src/entities/superAdmin.entities';
-import { Injectable } from '@nestjs/common';
 import jwt from 'src/utils/jwt';
+// import { SuperAdmin } from '../../entities/superAdmin.entities';
 
 @Injectable()
 export class ProvicesServic {
-  async findOne(req) {
-    const { token } = req.headers;
-
-    const { password, email } = jwt.verify(token);
-
-    const user = await SuperAdmin.findOne({
-      where: { password, email },
-    });
-
-    return user;
-  }
-
-  async uploadImage(file, superAdmin) {
+  async findAll() {
     try {
-      const { first_name, last_name, email, password } = superAdmin.body;
-
-      const {
-        raw: [{ id }],
-      } = await SuperAdmin.createQueryBuilder()
-        .insert()
-        .into(SuperAdmin)
-        .values({
-          first_name,
-          last_name,
-          email,
-          password,
-          images: `/img/${file.filename}`,
-        })
-        .execute();
-
-      const data = await SuperAdmin.findOne({
-        where: { id },
+      const categories = await Provinces.find({
+        select: { provinces_id: true, provinces_text: true },
       });
 
-      const token = jwt.sign({ password: data.password, email: data.email });
+      return categories;
+    } catch (error) {
+      console.log(error.message);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
 
-      if (id) {
+  async provicesCreate(req) {
+    try {
+      const { provinces_text } = req?.body;
+      if (!provinces_text) {
+        throw new HttpException(
+          'categories_name is not found',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const provices = await Provinces.findOne({
+        where: {
+          provinces_text,
+        },
+      });
+
+      if (provices) {
         return {
-          status: 201,
-          message: 'Success',
-          token: token,
+          status: 409,
+          message: 'There is such a province',
         };
       }
+
+      const { raw } = await Provinces.createQueryBuilder()
+        .insert()
+        .into(Provinces)
+        .values({
+          provinces_text,
+        })
+        .returning(['provinces_text'])
+        .execute();
+
+      return {
+        status: 201,
+        message: 'Success',
+        data: raw,
+      };
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
-  async adminLogin(req) {
-    const { email, password } = req.body;
+  async provicesUpdate(param, req) {
+    try {
+      const { provinces_text } = req?.body;
+      if (!provinces_text) {
+        throw new HttpException(
+          'provinces_text is not found',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      console.log(param);
 
-    const user = await SuperAdmin.findOne({
-      where: { password, email },
-    });
+      const { id } = param;
+      console.log(id);
 
-    const token = jwt.sign({ password: user.password, email: user.email });
+      const { raw } = await Provinces.createQueryBuilder()
+        .update(Provinces)
+        .set({ provinces_text })
+        .where({ provinces_id: id })
+        .returning(['provinces_text'])
+        .execute();
 
-    return {
-      status: 201,
-      message: 'Success',
-      token: token,
-    };
+      return {
+        status: 200,
+        message: 'Success',
+        data: raw,
+      };
+    } catch (error) {
+      console.log(error.message);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
-  async putAdmin(req, file) {
-    const { first_name, last_name, email, password } = req.body;
+  async provicesDelete(param) {
+    try {
+      const { id } = param;
 
-    const { token } = req.headers;
-    if (!token) {
+      const { raw } = await Provinces.createQueryBuilder()
+        .softDelete()
+        .from(Provinces)
+        .where({ provinces_id: id })
+        .returning(['provinces_text'])
+        .execute();
+
       return {
-        status: 400,
-        message: 'Token is not found',
+        status: 200,
+        message: 'Success',
+        data: raw,
       };
+    } catch (error) {
+      console.log(error.message);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
-
-    const newTokenVerify = jwt.verify(token);
-
-    const users = await SuperAdmin.findOne({
-      where: {
-        password: newTokenVerify.password,
-        email: newTokenVerify.email,
-      },
-    });
-
-    if (!users) {
-      return {
-        status: 404,
-        message: 'Users is not found',
-      };
-    }
-
-    const filename = file?.filename || users.images.split('/')[2];
-
-    const data = await SuperAdmin.createQueryBuilder()
-      .update(SuperAdmin)
-      .set({
-        first_name,
-        email,
-        last_name,
-        password,
-        images: `/img/${filename}`,
-      })
-      .where({ id: users.id })
-      .execute();
-
-    return {
-      status: 200,
-      message: 'Success',
-    };
   }
 }

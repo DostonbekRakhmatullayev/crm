@@ -1,4 +1,6 @@
 import { Controller, Get, Req, Post, Put, Param, Delete } from '@nestjs/common';
+import { ProvicesCreateDto } from './dto/provices.create.dto';
+import { ProvicesUpdateDto } from './dto/provices.update.dto';
 
 import { ProvicesServic } from './provices.servic';
 @Controller()
@@ -11,20 +13,17 @@ export class ProvicesController {
   }
 
   @Post('/provices')
-  async categoriesCreate(@Req() req: CategoriesCreateDto) {
-    return await this.provicesServic.categoriesCreate(req);
+  async provicesCreate(@Req() req: ProvicesCreateDto) {
+    return await this.provicesServic.provicesCreate(req);
   }
 
   @Put('/provices/:id')
-  async categoriesUpdate(
-    @Param() param: string,
-    @Req() req?: categoriesUpdateDto,
-  ) {
-    return await this.provicesServic.categoriesUpdate(param, req);
+  async provicesUpdate(@Param() param: string, @Req() req?: ProvicesUpdateDto) {
+    return await this.provicesServic.provicesUpdate(param, req);
   }
 
   @Delete('/provices/:id')
-  async categoriesDelete(@Param() param: string) {
-    return await this.provicesServic.categoriesDelete(param);
+  async provicesDelete(@Param() param: string) {
+    return await this.provicesServic.provicesDelete(param);
   }
 }

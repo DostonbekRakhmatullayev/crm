@@ -11,6 +11,12 @@ export class SuperAdminServic {
 
     const user = await SuperAdmin.findOne({
       where: { password, email },
+      select: {
+        id: true,
+        first_name: true,
+        last_name: true,
+        images: true
+      },
     });
 
     return user;

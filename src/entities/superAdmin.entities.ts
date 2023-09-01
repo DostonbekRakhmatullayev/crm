@@ -5,6 +5,8 @@ import {
   PrimaryGeneratedColumn,
   BaseEntity,
   DeleteDateColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({
@@ -50,4 +52,10 @@ export class SuperAdmin extends BaseEntity {
   images: string;
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
+
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  updatedAt: Date;
 }
