@@ -1,25 +1,30 @@
 import { SuperAdmin } from 'src/entities/superAdmin.entities';
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import jwt from 'src/utils/jwt';
 
 @Injectable()
 export class SuperAdminServic {
   async findOne(req) {
-    const { token } = req.headers;
+    try {
+      const { token } = req.headers;
 
-    const { password, email } = jwt.verify(token);
+      const { password, email } = jwt.verify(token);
 
-    const user = await SuperAdmin.findOne({
-      where: { password, email },
-      select: {
-        id: true,
-        first_name: true,
-        last_name: true,
-        images: true
-      },
-    });
+      const user = await SuperAdmin.findOne({
+        where: { password, email },
+        select: {
+          id: true,
+          first_name: true,
+          last_name: true,
+          images: true,
+        },
+      });
 
-    return user;
+      return user;
+    } catch (error) {
+      console.log(error.message);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   async uploadImage(file, superAdmin) {
@@ -54,70 +59,81 @@ export class SuperAdminServic {
         };
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
   async adminLogin(req) {
-    const { email, password } = req.body;
+    try {
+      const { email, password } = req.body;
 
-    const user = await SuperAdmin.findOne({
-      where: { password, email },
-    });
+      const user = await SuperAdmin.findOne({
+        where: { password, email },
+      });
 
-    const token = jwt.sign({ password: user.password, email: user.email });
+      const token = jwt.sign({ password: user.password, email: user.email });
 
-    return {
-      status: 201,
-      message: 'Success',
-      token: token,
-    };
+      return {
+        status: 201,
+        message: 'Success',
+        token: token,
+      };
+    } catch (error) {
+      console.log(error.message);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   async putAdmin(req, file) {
-    const { first_name, last_name, email, password } = req.body;
+    try {
+      const { first_name, last_name, email, password } = req.body;
 
-    const { token } = req.headers;
-    if (!token) {
+      const { token } = req.headers;
+      if (!token) {
+        return {
+          status: 400,
+          message: 'Token is not found',
+        };
+      }
+
+      const newTokenVerify = jwt.verify(token);
+
+      const users = await SuperAdmin.findOne({
+        where: {
+          password: newTokenVerify.password,
+          email: newTokenVerify.email,
+        },
+      });
+
+      if (!users) {
+        return {
+          status: 404,
+          message: 'Users is not found',
+        };
+      }
+
+      const filename = file?.filename || users.images.split('/')[2];
+
+      const data = await SuperAdmin.createQueryBuilder()
+        .update(SuperAdmin)
+        .set({
+          first_name,
+          email,
+          last_name,
+          password,
+          images: `/img/${filename}`,
+        })
+        .where({ id: users.id })
+        .execute();
+
       return {
-        status: 400,
-        message: 'Token is not found',
+        status: 200,
+        message: 'Success',
       };
+    } catch (error) {
+      console.log(error.message);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
-
-    const newTokenVerify = jwt.verify(token);
-
-    const users = await SuperAdmin.findOne({
-      where: {
-        password: newTokenVerify.password,
-        email: newTokenVerify.email,
-      },
-    });
-
-    if (!users) {
-      return {
-        status: 404,
-        message: 'Users is not found',
-      };
-    }
-
-    const filename = file?.filename || users.images.split('/')[2];
-
-    const data = await SuperAdmin.createQueryBuilder()
-      .update(SuperAdmin)
-      .set({
-        first_name,
-        email,
-        last_name,
-        password,
-        images: `/img/${filename}`,
-      })
-      .where({ id: users.id })
-      .execute();
-
-    return {
-      status: 200,
-      message: 'Success',
-    };
   }
 }

@@ -1,8 +1,5 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { Categories } from 'src/entities/categories.entities';
-import { SuperAdmin } from 'src/entities/superAdmin.entities';
-import jwt from 'src/utils/jwt';
-// import { SuperAdmin } from '../../entities/superAdmin.entities';
 
 @Injectable()
 export class CategoriesServic {
