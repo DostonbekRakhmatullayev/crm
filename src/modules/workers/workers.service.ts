@@ -1,60 +1,65 @@
 import { SuperAdmin } from 'src/entities/superAdmin.entities';
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import jwt from 'src/utils/jwt';
+import { Workers } from 'src/entities/workers.entities';
 
 @Injectable()
 export class WorkersService {
-  async findAll(req) {
-    const { token } = req.headers;
-
-    const { password, email } = jwt.verify(token);
-
-    const user = await SuperAdmin.find({
-      where: { password, email },
-      select: {
-        id: true,
-        first_name: true,
-        last_name: true,
-        images: true,
-      },
-    });
-
-    return user;
+  async findAll() {
+    try {
+      const user = await Workers.find();
+      return user;
+    } catch (error) {
+      console.log(error.message);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
-  async workersCreate(file, superAdmin) {
+  async workersCreate(file, req) {
     try {
-      const { first_name, last_name, email, password } = superAdmin.body;
+      console.log(file);
+
+      console.log(req.body);
 
       const {
-        raw: [{ id }],
-      } = await SuperAdmin.createQueryBuilder()
+        first_name,
+        last_name,
+        categories_id,
+        date_of_birth,
+        gender,
+        phone_number,
+        provinces_id,
+        personal_information,
+        personal_data,
+      } = req.body;
+      console.log(personal_data);
+
+      const { raw } = await Workers.createQueryBuilder()
         .insert()
-        .into(SuperAdmin)
+        .into(Workers)
         .values({
           first_name,
           last_name,
-          email,
-          password,
+          categories: categories_id,
+          date_of_birth,
+          gender,
+          phone_number,
+          provinces: provinces_id,
+          personal_information,
+          personal_data,
           images: `/img/${file.filename}`,
         })
+        .returning(['*'])
         .execute();
 
-      const data = await SuperAdmin.findOne({
-        where: { id },
-      });
-
-      const token = jwt.sign({ password: data.password, email: data.email });
-
-      if (id) {
-        return {
-          status: 201,
-          message: 'Success',
-          token: token,
-        };
-      }
+      return {
+        status: 201,
+        message: 'Success',
+        data: raw,
+      };
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -71,10 +76,10 @@ export class WorkersService {
 
     const newTokenVerify = jwt.verify(token);
 
-    const users = await SuperAdmin.findOne({
+    const users = await Workers.findOne({
       where: {
-        password: newTokenVerify.password,
-        email: newTokenVerify.email,
+        // password: newTokenVerify.password,
+        // email: newTokenVerify.email,
       },
     });
 
@@ -87,16 +92,16 @@ export class WorkersService {
 
     const filename = file?.filename || users.images.split('/')[2];
 
-    const data = await SuperAdmin.createQueryBuilder()
-      .update(SuperAdmin)
+    const data = await Workers.createQueryBuilder()
+      .update(Workers)
       .set({
         first_name,
-        email,
+        // email,
         last_name,
-        password,
+        // password,
         images: `/img/${filename}`,
       })
-      .where({ id: users.id })
+      .where({})
       .execute();
 
     return {

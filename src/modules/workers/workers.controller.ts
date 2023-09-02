@@ -9,26 +9,27 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/helpers/multer';
+import { CreateWorkersDto } from './dto/workers.create.dto';
 import { WorkersService } from './workers.service';
-@Controller('/super')
+@Controller('/workers')
 export class WorkersController {
   constructor(private readonly workersService: WorkersService) {}
 
-  @Get('/admin')
-  async findAll(@Req() req: Request) {
-    return await this.workersService.findAll(req);
+  @Get('/get')
+  async findAll() {
+    return await this.workersService.findAll();
   }
 
-  @Post('/admin')
+  @Post('/create')
   @UseInterceptors(FileInterceptor('images', multerOptions))
   async workersCreate(
     @UploadedFile() file: Express.Multer.File,
-    @Req() superAdmin,
+    @Req() req: CreateWorkersDto,
   ) {
-    return await this.workersService.workersCreate(file, superAdmin);
+    return await this.workersService.workersCreate(file, req);
   }
 
-  @Put('/admin')
+  @Put('/update')
   @UseInterceptors(FileInterceptor('images', multerOptions))
   async workersUpdate(@UploadedFile() file?: Express.Multer.File, @Req() req?) {
     return await this.workersService.workersUpdate(req, file);

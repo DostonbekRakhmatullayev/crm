@@ -6,7 +6,9 @@ import {
   BaseEntity,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { Workers } from './workers.entities';
 
 @Entity({
   name: 'provinces',
@@ -28,6 +30,9 @@ export class Provinces extends BaseEntity {
     default: 'isActive',
   })
   isActive: string;
+
+  @OneToMany(() => Workers, (workers) => workers.provinces)
+  workers: Workers[];
 
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;

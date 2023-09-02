@@ -7,14 +7,21 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  BaseEntity,
 } from 'typeorm';
 import { Categories } from './categories.entities';
 import { Monthly } from './monthly.entities';
+import { Provinces } from './provinces.entities';
+
+enum Gender {
+  Male = 'male',
+  Female = 'female',
+}
 
 @Entity({
   name: 'workers',
 })
-export class Workers {
+export class Workers extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   workers_id: string;
 
@@ -34,18 +41,31 @@ export class Workers {
   last_name: string;
 
   @Column({
-    name: 'email',
-    type: 'varchar',
-    length: 150,
+    name: 'date_of_birth',
   })
-  email: string;
+  date_of_birth: Date;
+
+  @Column('text')
+  gender: Gender;
 
   @Column({
-    name: 'password',
+    name: 'phone_number',
     type: 'varchar',
     length: 200,
   })
-  password: string;
+  phone_number: string;
+
+  @Column({
+    name: 'personal_information',
+    type: 'text',
+  })
+  personal_information: string;
+
+  @Column({
+    name: 'personal_data',
+    type: 'text',
+  })
+  personal_data: string;
 
   @Column({
     type: 'text',
@@ -58,6 +78,16 @@ export class Workers {
     default: 'isActive',
   })
   isActive: string;
+
+  @OneToMany(() => Monthly, (monthly) => monthly.workers)
+  monthly: Monthly[];
+
+  @ManyToOne(() => Categories, (categories) => categories.workers)
+  categories: Categories;
+
+  @ManyToOne(() => Provinces, (provinces) => provinces.workers)
+  provinces: Provinces;
+
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
 
@@ -66,10 +96,6 @@ export class Workers {
 
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
-
-  @OneToMany(() => Monthly, (monthly) => monthly.workers)
-  monthly: Monthly[];
-
-  @ManyToOne(() => Categories, (categories) => categories.workers)
-  categories: Categories;
 }
+// @Column({ type: 'timestamptz' }) // Recommended
+// date_time_with_timezone: Date;

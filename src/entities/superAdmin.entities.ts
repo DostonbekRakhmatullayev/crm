@@ -1,7 +1,6 @@
 import {
   Entity,
   Column,
-  UpdateQueryBuilder,
   PrimaryGeneratedColumn,
   BaseEntity,
   DeleteDateColumn,

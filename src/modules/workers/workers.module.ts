@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { MiddlewareConsumer } from '@nestjs/common/interfaces';
+import { ChikTokenMiddleware } from 'src/middleware/chiktoken.middleware';
 import { WorkersController } from './workers.controller';
 import { WorkersService } from './workers.service';
 
@@ -7,4 +9,8 @@ import { WorkersService } from './workers.service';
   controllers: [WorkersController],
   providers: [WorkersService],
 })
-export class WorkersModule {}
+export class WorkersModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(ChikTokenMiddleware).forRoutes('/workers');
+  }
+}
