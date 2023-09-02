@@ -7,6 +7,7 @@ import {
   Put,
   UploadedFile,
   Param,
+  Delete,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/helpers/multer';
@@ -20,6 +21,11 @@ export class WorkersController {
   @Get('/get')
   async findAll() {
     return await this.workersService.findAll();
+  }
+
+  @Get('/get/:id')
+  async findOne(@Param() param: string) {
+    return await this.workersService.findOne(param);
   }
 
   @Post('/create')
@@ -39,5 +45,10 @@ export class WorkersController {
     @Param() param?: string,
   ) {
     return await this.workersService.workersUpdate(req, file, param);
+  }
+
+  @Delete('/delete/:id')
+  async workerDelete(@Param() param?: string) {
+    return await this.workersService.workerDelete(param);
   }
 }
