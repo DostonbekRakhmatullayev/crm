@@ -1,33 +1,33 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 
-export class SuperAdminValidator {
+export class UpdateUserDto {
   @IsString()
-  first_name: string;
+  readonly first_name: string;
 
   @IsString()
-  last_name: string;
+  readonly last_name: string;
 
   @IsString()
-  date_of_birth: Date;
+  readonly date_of_birth: Date;
 
   @IsString()
-  password: string;
+  readonly password: string;
 
   @IsString()
-  gender: string;
+  readonly gender: string;
 
   @IsString()
-  phone_number: string;
+  readonly phone_number: string;
 
   @IsString()
-  personal_information: string;
+  readonly personal_information: string;
 
   @IsString()
-  personal_data: string;
+  readonly personal_data: string;
 
   @IsString()
-  categories: string;
+  readonly categories: string;
 
   @IsString()
-  provinces: string;
+  readonly provinces: string;
 }

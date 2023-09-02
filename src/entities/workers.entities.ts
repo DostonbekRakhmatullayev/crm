@@ -97,5 +97,3 @@ export class Workers extends BaseEntity {
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 }
-// @Column({ type: 'timestamptz' }) // Recommended
-// date_time_with_timezone: Date;

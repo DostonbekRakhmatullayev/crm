@@ -7,7 +7,20 @@ import { Workers } from 'src/entities/workers.entities';
 export class WorkersService {
   async findAll() {
     try {
-      const user = await Workers.find();
+      const user = await Workers.find({
+        select: {
+          workers_id: true,
+          first_name: true,
+          last_name: true,
+          date_of_birth: true,
+          gender: true,
+          phone_number: true,
+          personal_information: true,
+          personal_data: true,
+          images: true,
+          createdAt: true,
+        },
+      });
       return user;
     } catch (error) {
       console.log(error.message);
@@ -17,10 +30,6 @@ export class WorkersService {
 
   async workersCreate(file, req) {
     try {
-      console.log(file);
-
-      console.log(req.body);
-
       const {
         first_name,
         last_name,
@@ -32,7 +41,6 @@ export class WorkersService {
         personal_information,
         personal_data,
       } = req.body;
-      console.log(personal_data);
 
       const { raw } = await Workers.createQueryBuilder()
         .insert()
@@ -63,50 +71,60 @@ export class WorkersService {
     }
   }
 
-  async workersUpdate(req, file) {
-    const { first_name, last_name, email, password } = req.body;
+  async workersUpdate(req, file, param) {
+    const {
+      first_name,
+      last_name,
+      categories_id,
+      date_of_birth,
+      gender,
+      phone_number,
+      provinces_id,
+      personal_information,
+      personal_data,
+    } = req.body;
 
-    const { token } = req.headers;
-    if (!token) {
-      return {
-        status: 400,
-        message: 'Token is not found',
-      };
-    }
-
-    const newTokenVerify = jwt.verify(token);
+    const { id } = param;
 
     const users = await Workers.findOne({
       where: {
-        // password: newTokenVerify.password,
-        // email: newTokenVerify.email,
+        workers_id: id,
       },
     });
 
     if (!users) {
       return {
         status: 404,
-        message: 'Users is not found',
+        message: 'Workers is not found',
       };
     }
 
     const filename = file?.filename || users.images.split('/')[2];
 
-    const data = await Workers.createQueryBuilder()
+    const { raw } = await Workers.createQueryBuilder()
       .update(Workers)
       .set({
         first_name,
-        // email,
         last_name,
-        // password,
+        categories: categories_id,
+        date_of_birth,
+        gender,
+        phone_number,
+        provinces: provinces_id,
+        personal_information,
+        personal_data,
         images: `/img/${filename}`,
       })
-      .where({})
+      .where({
+        workers_id: id,
+      })
+      .returning(['*'])
       .execute();
 
     return {
       status: 200,
       message: 'Success',
+      data: raw,
     };
   }
 }
