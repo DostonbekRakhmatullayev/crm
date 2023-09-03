@@ -1,9 +1,18 @@
 admin == admin bir nechta buladi 
 supperAdmin == supperAdmin bitta buladi 
 categories == categories 
-monthly == oylik ishchilardiki
 provinces ==  viloyatlar 
 workers ==   ishchilar
+
+monthly == oylik ishchilardiki
+
+monthly_daily ==  oylik har kuni
+
+advance == avans
+
+penalty == jarima
+
+price == oyliklar narxlar 
 
 provinces {
   Toshkent = 'Toshkent',

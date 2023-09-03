@@ -27,12 +27,6 @@ export class Monthly {
   })
   isActive: string;
 
-  @Column({
-    name: 'penalty',
-    default: 0,
-  })
-  penalty: number;
-
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
 
