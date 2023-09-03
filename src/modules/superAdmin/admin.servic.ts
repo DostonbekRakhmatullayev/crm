@@ -1,16 +1,17 @@
 import { SuperAdmin } from 'src/entities/superAdmin.entities';
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import jwt from 'src/utils/jwt';
+import { Admin } from 'src/entities/admin.entities';
 
 @Injectable()
-export class SuperAdminServic {
+export class AdminServic {
   async findOne(req) {
     try {
       const { token } = req.headers;
 
       const { password, email } = jwt.verify(token);
 
-      const user = await SuperAdmin.findOne({
+      const user = await Admin.findOne({
         where: { password, email },
         select: {
           id: true,
@@ -27,15 +28,15 @@ export class SuperAdminServic {
     }
   }
 
-  async uploadImage(file, superAdmin) {
+  async uploadImage(file, req) {
     try {
-      const { first_name, last_name, email, password } = superAdmin.body;
+      const { first_name, last_name, email, password } = req.body;
 
       const {
         raw: [{ id }],
-      } = await SuperAdmin.createQueryBuilder()
+      } = await Admin.createQueryBuilder()
         .insert()
-        .into(SuperAdmin)
+        .into(Admin)
         .values({
           first_name,
           last_name,
@@ -45,7 +46,7 @@ export class SuperAdminServic {
         })
         .execute();
 
-      const data = await SuperAdmin.findOne({
+      const data = await Admin.findOne({
         where: { id },
       });
 
@@ -68,7 +69,7 @@ export class SuperAdminServic {
     try {
       const { email, password } = req.body;
 
-      const user = await SuperAdmin.findOne({
+      const user = await Admin.findOne({
         where: { password, email },
       });
 
@@ -99,7 +100,7 @@ export class SuperAdminServic {
 
       const newTokenVerify = jwt.verify(token);
 
-      const users = await SuperAdmin.findOne({
+      const users = await Admin.findOne({
         where: {
           password: newTokenVerify.password,
           email: newTokenVerify.email,
@@ -115,8 +116,8 @@ export class SuperAdminServic {
 
       const filename = file?.filename || users.images.split('/')[2];
 
-      const data = await SuperAdmin.createQueryBuilder()
-        .update(SuperAdmin)
+      const data = await Admin.createQueryBuilder()
+        .update(Admin)
         .set({
           first_name,
           email,

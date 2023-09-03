@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 
-export class SuperAdminValidator {
+export class AdminValidator {
   @IsString()
   @IsNotEmpty()
   first_name: string;

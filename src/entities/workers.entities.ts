@@ -8,9 +8,14 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   BaseEntity,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
+import { Advance } from './advance.entities';
 import { Categories } from './categories.entities';
 import { Monthly } from './monthly.entities';
+import { MonthlyDaily } from './monthlyDaily.entities';
+import { Penalty } from './penalty.entites';
 import { Provinces } from './provinces.entities';
 
 enum Gender {
@@ -79,13 +84,33 @@ export class Workers extends BaseEntity {
   })
   isActive: string;
 
-  @OneToMany(() => Monthly, (monthly) => monthly.workers)
-  monthly: Monthly[];
+  @OneToMany(() => MonthlyDaily, (monthlyDaily) => monthlyDaily.workers, {
+    cascade: true,
+  })
+  monthlyDaily: MonthlyDaily[];
 
-  @ManyToOne(() => Categories, (categories) => categories.workers)
+  @OneToMany(() => Penalty, (penalty) => penalty.workers, {
+    cascade: true,
+  })
+  penalty: Penalty[];
+
+  @OneToMany(() => Advance, (advance) => advance.workers, {
+    cascade: true,
+  })
+  advance: Advance[];
+
+  @OneToOne(() => Monthly, (monthly) => monthly.workers, { cascade: true })
+  @JoinColumn()
+  monthly: Monthly;
+
+  @ManyToOne(() => Categories, (categories) => categories.workers, {
+    cascade: true,
+  })
   categories: Categories;
 
-  @ManyToOne(() => Provinces, (provinces) => provinces.workers)
+  @ManyToOne(() => Provinces, (provinces) => provinces.workers, {
+    cascade: true,
+  })
   provinces: Provinces;
 
   @DeleteDateColumn({ name: 'deleted_at' })

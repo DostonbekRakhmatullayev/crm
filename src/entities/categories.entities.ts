@@ -34,6 +34,6 @@ export class Categories extends BaseEntity {
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
-  @OneToMany(() => Workers, (workers) => workers.categories)
+  @OneToMany(() => Workers, (workers) => workers.categories, { cascade: true })
   workers: Workers[];
 }

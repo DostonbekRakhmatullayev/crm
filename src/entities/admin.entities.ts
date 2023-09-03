@@ -2,17 +2,18 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
+  BaseEntity,
+  DeleteDateColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  DeleteDateColumn,
 } from 'typeorm';
 
 @Entity({
   name: 'admin',
 })
-export class Admin {
+export class Admin extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  admin_id: string;
+  id: string;
 
   @Column({
     name: 'first_name',
@@ -21,13 +22,6 @@ export class Admin {
     nullable: true,
   })
   first_name: string;
-  @Column({
-    name: 'level',
-    type: 'varchar',
-    length: 100,
-    nullable: true,
-  })
-  level: string;
 
   @Column({
     name: 'last_name',
@@ -55,12 +49,6 @@ export class Admin {
     name: 'images',
   })
   images: string;
-
-  @Column({
-    name: 'isActive',
-    default: 'isActive',
-  })
-  isActive: string;
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
 

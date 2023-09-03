@@ -8,28 +8,28 @@ import {
   Param,
   UploadedFile,
 } from '@nestjs/common';
-import { SuperAdminServic } from './superAdmin.servic';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { SuperAdminValidator } from './dto/superadmin.create.dto';
+import { AdminValidator } from './dto/admin.create.dto';
 import { multerOptions } from 'src/helpers/multer';
-import { NewsUpdateDto } from './dto/superadmin.put.dto';
+import { NewsUpdateDto } from './dto/admin.put.dto';
 import { LoginValidator } from './dto/login.dto';
+import { AdminServic } from './admin.servic';
 @Controller('/super')
-export class SuperAdminController {
-  constructor(private readonly superAdminServic: SuperAdminServic) {}
+export class AdminController {
+  constructor(private readonly adminServic: AdminServic) {}
 
   @Get('/admin')
   async findOne(@Req() req: Request) {
-    return await this.superAdminServic.findOne(req);
+    return await this.adminServic.findOne(req);
   }
 
   @Post('/admin')
   @UseInterceptors(FileInterceptor('images', multerOptions))
   async uploadImage(
     @UploadedFile() file: Express.Multer.File,
-    @Req() superAdmin: SuperAdminValidator,
+    @Req() req: AdminValidator,
   ) {
-    return await this.superAdminServic.uploadImage(file, superAdmin);
+    return await this.adminServic.uploadImage(file, req);
   }
 
   @Put('/admin')
@@ -38,11 +38,11 @@ export class SuperAdminController {
     @UploadedFile() file?: Express.Multer.File,
     @Req() req?: NewsUpdateDto,
   ) {
-    return await this.superAdminServic.putAdmin(req, file);
+    return await this.adminServic.putAdmin(req, file);
   }
 
   @Post('/login')
   async adminLogin(@Req() body: LoginValidator) {
-    return await this.superAdminServic.adminLogin(body);
+    return await this.adminServic.adminLogin(body);
   }
 }

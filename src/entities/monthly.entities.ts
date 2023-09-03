@@ -2,19 +2,20 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToOne,
+  BaseEntity,
 } from 'typeorm';
 import { Workers } from './workers.entities';
 
 @Entity({
   name: 'monthly',
 })
-export class Monthly {
+export class Monthly extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  provinces_id: string;
+  monthly_id: string;
 
   @Column({
     name: 'monthly_name',
@@ -36,6 +37,6 @@ export class Monthly {
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
-  @ManyToOne(() => Workers, (workers) => workers.monthly)
+  @OneToOne(() => Workers, (workers) => workers.monthly, { cascade: true })
   workers: Workers;
 }
