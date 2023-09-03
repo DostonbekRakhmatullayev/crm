@@ -84,33 +84,23 @@ export class Workers extends BaseEntity {
   })
   isActive: string;
 
-  @OneToMany(() => MonthlyDaily, (monthlyDaily) => monthlyDaily.workers, {
-    cascade: true,
-  })
+  @OneToMany(() => MonthlyDaily, (monthlyDaily) => monthlyDaily.workers)
   monthlyDaily: MonthlyDaily[];
 
-  @OneToMany(() => Penalty, (penalty) => penalty.workers, {
-    cascade: true,
-  })
+  @OneToMany(() => Penalty, (penalty) => penalty.workers)
   penalty: Penalty[];
 
-  @OneToMany(() => Advance, (advance) => advance.workers, {
-    cascade: true,
-  })
+  @OneToMany(() => Advance, (advance) => advance.workers)
   advance: Advance[];
 
-  @OneToOne(() => Monthly, (monthly) => monthly.workers, { cascade: true })
+  @OneToOne(() => Monthly, (monthly) => monthly.workers)
   @JoinColumn()
   monthly: Monthly;
 
-  @ManyToOne(() => Categories, (categories) => categories.workers, {
-    cascade: true,
-  })
+  @ManyToOne(() => Categories, (categories) => categories.workers)
   categories: Categories;
 
-  @ManyToOne(() => Provinces, (provinces) => provinces.workers, {
-    cascade: true,
-  })
+  @ManyToOne(() => Provinces, (provinces) => provinces.workers)
   provinces: Provinces;
 
   @DeleteDateColumn({ name: 'deleted_at' })

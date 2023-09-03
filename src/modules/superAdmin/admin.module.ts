@@ -7,4 +7,4 @@ import { AdminServic } from './admin.servic';
   controllers: [AdminController],
   providers: [AdminServic],
 })
-export class SuperAdminModule {}
+export class AdminModule {}

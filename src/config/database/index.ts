@@ -7,6 +7,7 @@ import { Monthly } from 'src/entities/monthly.entities';
 import { Price } from 'src/entities/price.entities';
 import { Penalty } from 'src/entities/penalty.entites';
 import { Advance } from 'src/entities/advance.entities';
+import { MonthlyDaily } from 'src/entities/monthlyDaily.entities';
 export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
   useFactory: async () => {
     return {
@@ -22,8 +23,8 @@ export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
         Provinces,
         Workers,
         Monthly,
+        MonthlyDaily,
         Price,
-        Provinces,
         Penalty,
         Advance,
       ],

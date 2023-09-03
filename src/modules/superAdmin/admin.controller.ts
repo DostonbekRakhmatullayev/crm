@@ -14,16 +14,16 @@ import { multerOptions } from 'src/helpers/multer';
 import { NewsUpdateDto } from './dto/admin.put.dto';
 import { LoginValidator } from './dto/login.dto';
 import { AdminServic } from './admin.servic';
-@Controller('/super')
+@Controller('/admin')
 export class AdminController {
   constructor(private readonly adminServic: AdminServic) {}
 
-  @Get('/admin')
+  @Get('/get')
   async findOne(@Req() req: Request) {
     return await this.adminServic.findOne(req);
   }
 
-  @Post('/admin')
+  @Post('/create')
   @UseInterceptors(FileInterceptor('images', multerOptions))
   async uploadImage(
     @UploadedFile() file: Express.Multer.File,
@@ -32,7 +32,7 @@ export class AdminController {
     return await this.adminServic.uploadImage(file, req);
   }
 
-  @Put('/admin')
+  @Put('/update')
   @UseInterceptors(FileInterceptor('images', multerOptions))
   async putAdmin(
     @UploadedFile() file?: Express.Multer.File,

@@ -15,7 +15,7 @@ import { Workers } from './workers.entities';
 })
 export class Advance extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  penalty_id: string;
+  advance_id: string;
 
   @Column({
     name: 'advance',
