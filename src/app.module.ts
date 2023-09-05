@@ -8,6 +8,7 @@ import { WorkersModule } from './modules/workers/workers.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { ProvidersModule } from './modules/provinces/provices.module';
 import { MonthlyModule } from './modules/monthly/monthly.module';
+import { ImgModule } from './modules/images/images.modules';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { MonthlyModule } from './modules/monthly/monthly.module';
     ProvidersModule,
     MonthlyModule,
     WorkersModule,
+    ImgModule,
     ConfigModule.forRoot(config),
     TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
   ],

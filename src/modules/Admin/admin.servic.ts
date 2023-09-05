@@ -96,9 +96,7 @@ export class AdminServic {
 
       const { password, email, role } = jwt.verify(token);
 
-      console.log(role);
-
-      const user = await Admin.findOne({
+      const user = await Admin.find({
         where: { email, password },
         select: {
           id: true,
@@ -109,7 +107,12 @@ export class AdminServic {
           password: true,
         },
       });
+      console.log(user);
+      console.log('assalom alaykum');
 
+      console.log(role == 'subadmin' ? 'Siz Asosiy adminsiz' : 'Siz Adminsiz');
+
+      // return user;
       return {
         status: 201,
         message: role == 'subadmin' ? 'Siz Asosiy adminsiz' : 'Siz Adminsiz',

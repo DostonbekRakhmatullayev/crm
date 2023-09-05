@@ -22,8 +22,7 @@ export class AdminController {
   constructor(private readonly adminServic: AdminServic) {}
 
   @Get('/get')
-  async findOne(@Req() req: Request, @Res() response: Response) {
-    // response.sendFile
+  async findOne(@Req() req: Request) {
     return await this.adminServic.findOne(req);
   }
 
