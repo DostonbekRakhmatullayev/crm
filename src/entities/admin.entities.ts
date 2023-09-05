@@ -49,6 +49,19 @@ export class Admin extends BaseEntity {
     name: 'images',
   })
   images: string;
+
+  @Column({
+    name: 'role',
+    default: 'admin',
+  })
+  role: string;
+
+  @Column({
+    name: 'isActive',
+    default: 'isActive',
+  })
+  isActive: string;
+
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
 
