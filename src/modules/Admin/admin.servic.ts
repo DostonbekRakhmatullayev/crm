@@ -11,7 +11,6 @@ export class AdminServic {
 
       const { role } = jwt.verify(token);
 
-      console.log(role);
       if (role != 'subadmin') {
         return {
           status: 429,
@@ -53,7 +52,6 @@ export class AdminServic {
 
       const { role } = jwt.verify(token);
 
-      console.log(role);
       if (role != 'subadmin') {
         return {
           status: 429,
@@ -268,9 +266,6 @@ export class AdminServic {
       const token = req?.headers?.token;
 
       const id = param?.id;
-
-      console.log(id);
-
       const { email, password, role } = jwt.verify(token);
 
       if (role != 'subadmin') {

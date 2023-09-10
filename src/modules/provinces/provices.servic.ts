@@ -71,10 +71,8 @@ export class ProvicesServic {
           HttpStatus.BAD_REQUEST,
         );
       }
-      console.log(param);
 
       const { id } = param;
-      console.log(id);
 
       const { raw } = await Provinces.createQueryBuilder()
         .update(Provinces)

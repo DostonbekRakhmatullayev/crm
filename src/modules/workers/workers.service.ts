@@ -91,9 +91,6 @@ export class WorkersService {
         personal_data,
       } = req.body;
 
-      console.log(categories_id);
-      console.log(provinces_id);
-
       const { raw } = await Workers.createQueryBuilder()
         .insert()
         .into(Workers)
@@ -166,7 +163,6 @@ export class WorkersService {
         })
         .returning('*')
         .execute();
-      console.log(raw);
 
       return {
         status: 200,
