@@ -44,8 +44,6 @@ export class Advance extends BaseEntity {
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
-  @ManyToOne(() => Workers, (workers) => workers.advance, {
-    cascade: true,
-  })
+  @ManyToOne(() => Workers, (workers) => workers.advance)
   workers: Workers;
 }

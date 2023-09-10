@@ -2,11 +2,11 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
+  BaseEntity,
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  BaseEntity,
 } from 'typeorm';
 import { Workers } from './workers.entities';
 
@@ -34,6 +34,6 @@ export class Categories extends BaseEntity {
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
-  @OneToMany(() => Workers, (workers) => workers.categories, { cascade: true })
+  @OneToMany(() => Workers, (workers) => workers.categories)
   workers: Workers[];
 }

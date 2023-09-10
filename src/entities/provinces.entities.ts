@@ -31,7 +31,7 @@ export class Provinces extends BaseEntity {
   })
   isActive: string;
 
-  @OneToMany(() => Workers, (workers) => workers.provinces, { cascade: true })
+  @OneToMany(() => Workers, (workers) => workers.provinces,)
   workers: Workers[];
 
   @DeleteDateColumn({ name: 'deleted_at' })

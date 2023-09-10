@@ -17,6 +17,7 @@ export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
       host: String(process.env.HOST),
       port: 5432,
       database: String(process.env.DATABASE),
+      // entities: [process.cwd(), 'dist', 'entities', '*.entities.{js,ts}'],
       entities: [
         Admin,
         Categories,

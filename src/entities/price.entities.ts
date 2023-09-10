@@ -37,8 +37,6 @@ export class Price extends BaseEntity {
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
-  @ManyToOne(() => Workers, (workers) => workers.monthlyDaily, {
-    cascade: true,
-  })
+  @ManyToOne(() => Workers, (workers) => workers.monthlyDaily,)
   workers: Workers;
 }

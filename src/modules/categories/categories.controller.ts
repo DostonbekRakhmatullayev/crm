@@ -1,4 +1,13 @@
-import { Controller, Get, Req, Post, Put, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Req,
+  Post,
+  Put,
+  Param,
+  Delete,
+  Body,
+} from '@nestjs/common';
 
 import { CategoriesServic } from './categories.servic';
 import { CategoriesCreateDto } from './dto/categories.create.dto';
@@ -13,7 +22,9 @@ export class CategoriesController {
   }
 
   @Post('/categories')
-  async categoriesCreate(@Req() req: CategoriesCreateDto) {
+  async categoriesCreate(@Body() body: {}, @Req() req: CategoriesCreateDto) {
+    console.log(body);
+
     return await this.categoriesServic.categoriesCreate(req);
   }
 

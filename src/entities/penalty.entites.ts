@@ -42,8 +42,6 @@ export class Penalty extends BaseEntity {
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
-  @ManyToOne(() => Workers, (workers) => workers.penalty, {
-    cascade: true,
-  })
+  @ManyToOne(() => Workers, (workers) => workers.penalty)
   workers: Workers;
 }

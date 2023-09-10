@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Body, Controller, Module, Post } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { config } from './config';
@@ -9,17 +9,19 @@ import { CategoriesModule } from './modules/categories/categories.module';
 import { ProvidersModule } from './modules/provinces/provices.module';
 import { MonthlyModule } from './modules/monthly/monthly.module';
 import { ImgModule } from './modules/images/images.modules';
+import { PriceModule } from './modules/price/price.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(config),
+    TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
     AdminModule,
     CategoriesModule,
     ProvidersModule,
-    MonthlyModule,
     WorkersModule,
+    MonthlyModule,
+    PriceModule,
     ImgModule,
-    ConfigModule.forRoot(config),
-    TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
   ],
 })
 export class AppModule {}

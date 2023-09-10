@@ -37,6 +37,6 @@ export class Monthly extends BaseEntity {
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
-  @OneToOne(() => Workers, (workers) => workers.monthly, { cascade: true })
+  @OneToOne(() => Workers, (workers) => workers.monthly, )
   workers: Workers;
 }

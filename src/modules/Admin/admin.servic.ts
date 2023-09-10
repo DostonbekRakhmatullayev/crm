@@ -1,4 +1,3 @@
-import { SuperAdmin } from 'src/entities/superAdmin.entities';
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import jwt from 'src/utils/jwt';
 import { Admin } from 'src/entities/admin.entities';
@@ -10,7 +9,7 @@ export class AdminServic {
     try {
       const { token } = req.headers;
 
-      const { password, email, role } = jwt.verify(token);
+      const { role } = jwt.verify(token);
 
       console.log(role);
       if (role != 'subadmin') {
@@ -52,7 +51,7 @@ export class AdminServic {
     try {
       const { token } = req.headers;
 
-      const { password, email, role } = jwt.verify(token);
+      const { role } = jwt.verify(token);
 
       console.log(role);
       if (role != 'subadmin') {
@@ -94,10 +93,10 @@ export class AdminServic {
     try {
       const { token } = req.headers;
 
-      const { password, email, role } = jwt.verify(token);
+      const { id, role } = jwt.verify(token);
 
       const user = await Admin.find({
-        where: { email, password },
+        where: { id },
         select: {
           id: true,
           first_name: true,
@@ -107,12 +106,7 @@ export class AdminServic {
           password: true,
         },
       });
-      console.log(user);
-      console.log('assalom alaykum');
 
-      console.log(role == 'subadmin' ? 'Siz Asosiy adminsiz' : 'Siz Adminsiz');
-
-      // return user;
       return {
         status: 201,
         message: role == 'subadmin' ? 'Siz Asosiy adminsiz' : 'Siz Adminsiz',
@@ -168,6 +162,7 @@ export class AdminServic {
         password: data.password,
         email: data.email,
         role: data.role,
+        id: data.id,
       });
 
       if (id) {
@@ -195,6 +190,7 @@ export class AdminServic {
         password: user.password,
         email: user.email,
         role: user.role,
+        id: user.id,
       });
 
       return {
@@ -232,7 +228,7 @@ export class AdminServic {
       if (!user) {
         return {
           status: 404,
-          message: 'User is not found',
+          message: 'This token is invalid',
         };
       }
 

@@ -1,7 +1,9 @@
 admin == admin bir nechta buladi 
-supperAdmin == supperAdmin bitta buladi 
+
 categories == categories 
+
 provinces ==  viloyatlar 
+
 workers ==   ishchilar
 
 monthly == oylik ishchilardiki

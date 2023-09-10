@@ -1,4 +1,3 @@
-import { SuperAdmin } from 'src/entities/superAdmin.entities';
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import jwt from 'src/utils/jwt';
 import { Workers } from 'src/entities/workers.entities';

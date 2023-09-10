@@ -17,10 +17,11 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new ErrorHandle());
 
-  const config = app.get(ConfigService);
+  // const config = app.get(ConfigService);
 
-  const port = config.getOrThrow<number>('app.port');
-  const host = config.getOrThrow<string>('app.host');
-  await app.listen(port, host);
+  // const port = config.getOrThrow<number>('app.port');
+  // const host = config.getOrThrow<string>('app.host');
+  await app.listen(3000);
+  // console.log(host + ':' + port);
 }
 bootstrap();

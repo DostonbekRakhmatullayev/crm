@@ -1,17 +1,16 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { Categories } from 'src/entities/categories.entities';
+import { Price } from 'src/entities/price.entities';
 import { Provinces } from 'src/entities/provinces.entities';
 import jwt from 'src/utils/jwt';
 
 @Injectable()
-export class ProvicesServic {
+export class PricServic {
   async findAll() {
     try {
-      const categories = await Provinces.find({
-        select: { provinces_id: true, provinces_text: true },
-      });
+      const pric = await Price.find({});
 
-      return categories;
+      return pric;
     } catch (error) {
       console.log(error.message);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
@@ -21,7 +20,6 @@ export class ProvicesServic {
   async provicesCreate(req) {
     try {
       const { provinces_text } = req?.body;
-
       if (!provinces_text) {
         throw new HttpException(
           'categories_name is not found',
