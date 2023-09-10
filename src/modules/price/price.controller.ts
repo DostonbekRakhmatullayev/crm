@@ -17,7 +17,7 @@ export class PricController {
     return await this.pricServic.provicesCreate(req);
   }
 
-  @Put('/update')
+  @Put('/update/:id')
   async provicesUpdate(@Param() param: string, @Req() req?: PricUpdateDto) {
     return await this.pricServic.provicesUpdate(param, req);
   }

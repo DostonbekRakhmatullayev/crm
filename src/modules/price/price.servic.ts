@@ -1,8 +1,6 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
-import { Categories } from 'src/entities/categories.entities';
+
 import { Price } from 'src/entities/price.entities';
-import { Provinces } from 'src/entities/provinces.entities';
-import jwt from 'src/utils/jwt';
 
 @Injectable()
 export class PricServic {
@@ -19,17 +17,14 @@ export class PricServic {
 
   async provicesCreate(req) {
     try {
-      const { provinces_text } = req?.body;
-      if (!provinces_text) {
-        throw new HttpException(
-          'categories_name is not found',
-          HttpStatus.BAD_REQUEST,
-        );
+      const { price } = req?.body;
+      if (!price) {
+        throw new HttpException('price is not found', HttpStatus.BAD_REQUEST);
       }
 
-      const provices = await Provinces.findOne({
+      const provices = await Price.findOne({
         where: {
-          provinces_text,
+          price,
         },
       });
 
@@ -40,13 +35,13 @@ export class PricServic {
         };
       }
 
-      const { raw } = await Provinces.createQueryBuilder()
+      const { raw } = await Price.createQueryBuilder()
         .insert()
-        .into(Provinces)
+        .into(Price)
         .values({
-          provinces_text,
+          price,
         })
-        .returning(['provinces_text'])
+        .returning(['price'])
         .execute();
 
       return {
@@ -62,23 +57,18 @@ export class PricServic {
 
   async provicesUpdate(param, req) {
     try {
-      const { provinces_text } = req?.body;
-      if (!provinces_text) {
-        throw new HttpException(
-          'provinces_text is not found',
-          HttpStatus.BAD_REQUEST,
-        );
+      const { price } = req?.body;
+      if (!price) {
+        throw new HttpException('price is not found', HttpStatus.BAD_REQUEST);
       }
-      console.log(param);
 
       const { id } = param;
-      console.log(id);
 
-      const { raw } = await Provinces.createQueryBuilder()
-        .update(Provinces)
-        .set({ provinces_text })
-        .where({ provinces_id: id })
-        .returning(['provinces_text'])
+      const { raw } = await Price.createQueryBuilder()
+        .update(Price)
+        .set({ price })
+        .where({ price_id: id })
+        .returning(['price'])
         .execute();
 
       return {
@@ -96,11 +86,11 @@ export class PricServic {
     try {
       const { id } = param;
 
-      const { raw } = await Provinces.createQueryBuilder()
+      const { raw } = await Price.createQueryBuilder()
         .softDelete()
-        .from(Provinces)
-        .where({ provinces_id: id })
-        .returning(['provinces_text'])
+        .from(Price)
+        .where({ price_id: id })
+        .returning(['price'])
         .execute();
 
       return {
