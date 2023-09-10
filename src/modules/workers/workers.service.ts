@@ -7,6 +7,9 @@ export class WorkersService {
   async findAll() {
     try {
       const user = await Workers.find({
+        relations: {
+          penalty: true,
+        },
         select: {
           workers_id: true,
           first_name: true,
@@ -18,6 +21,11 @@ export class WorkersService {
           personal_data: true,
           images: true,
           createdAt: true,
+          penalty: {
+            penalty_name: true,
+            penalty: true,
+            penalty_id: true,
+          },
         },
       });
       return user;
@@ -33,6 +41,9 @@ export class WorkersService {
         where: {
           workers_id: id,
         },
+        relations: {
+          penalty: true,
+        },
         select: {
           workers_id: true,
           first_name: true,
@@ -44,6 +55,11 @@ export class WorkersService {
           personal_data: true,
           images: true,
           createdAt: true,
+          penalty: {
+            penalty_name: true,
+            penalty: true,
+            penalty_id: true,
+          },
         },
       });
 

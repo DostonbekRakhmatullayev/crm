@@ -3,7 +3,7 @@ import { PricCreateDto } from '../price/dto/pric.create.dto';
 import { PricUpdateDto } from '../price/dto/pric.update.dto';
 import { PenaltyServic } from './penalty.servic';
 
-@Controller('/price')
+@Controller('/penalty')
 export class PenaltyController {
   constructor(private readonly penaltyServic: PenaltyServic) {}
 
@@ -13,17 +13,17 @@ export class PenaltyController {
   }
 
   @Post('/create')
-  async provicesCreate(@Req() req: PricCreateDto) {
-    return await this.penaltyServic.provicesCreate(req);
+  async penaltyCreate(@Req() req: PricCreateDto) {
+    return await this.penaltyServic.penaltyCreate(req);
   }
 
   @Put('/update/:id')
-  async provicesUpdate(@Param() param: string, @Req() req?: PricUpdateDto) {
-    return await this.penaltyServic.provicesUpdate(param, req);
+  async penaltyUpdate(@Param() param: string, @Req() req?: PricUpdateDto) {
+    return await this.penaltyServic.penaltyUpdate(param, req);
   }
 
   @Delete('/delete/:id')
-  async provicesDelete(@Param() param: string) {
-    return await this.penaltyServic.provicesDelete(param);
+  async penaltyDelete(@Param() param: string) {
+    return await this.penaltyServic.penaltyDelete(param);
   }
 }

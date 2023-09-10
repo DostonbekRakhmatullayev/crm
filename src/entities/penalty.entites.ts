@@ -18,9 +18,9 @@ export class Penalty extends BaseEntity {
   penalty_id: string;
 
   @Column({
-    name: 'penalty_title',
+    name: 'penalty',
   })
-  penalty_title: number;
+  penalty: number;
 
   @Column({
     name: 'penalty_name',

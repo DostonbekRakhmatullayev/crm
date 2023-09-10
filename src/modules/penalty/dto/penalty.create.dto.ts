@@ -3,5 +3,13 @@ import { IsString, IsNotEmpty } from 'class-validator';
 export class PenaltyCreateDto {
   @IsString()
   @IsNotEmpty()
-  price: number;
+  penalty: number;
+
+  @IsString()
+  @IsNotEmpty()
+  penalty_name: string;
+
+  @IsString()
+  @IsNotEmpty()
+  workers: string;
 }

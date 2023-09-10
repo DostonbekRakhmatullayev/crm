@@ -1,4 +1,5 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import { Penalty } from 'src/entities/penalty.entites';
 
 import { Price } from 'src/entities/price.entities';
 
@@ -6,42 +7,39 @@ import { Price } from 'src/entities/price.entities';
 export class PenaltyServic {
   async findAll() {
     try {
-      const pric = await Price.find({});
+      const penalty = await Penalty.find({});
 
-      return pric;
+      return penalty;
     } catch (error) {
       console.log(error.message);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
-  async provicesCreate(req) {
+  async penaltyCreate(req) {
     try {
-      const { price } = req?.body;
-      if (!price) {
-        throw new HttpException('price is not found', HttpStatus.BAD_REQUEST);
-      }
+      const { penalty_name, penalty, workers } = req?.body;
 
-      const provices = await Price.findOne({
-        where: {
-          price,
-        },
-      });
+      // const provices = await Penalty.findOne({
+      //   where: {},
+      // });
 
-      if (provices) {
-        return {
-          status: 409,
-          message: 'There is such a province',
-        };
-      }
+      // if (provices) {
+      //   return {
+      //     status: 409,
+      //     message: 'There is such a province',
+      //   };
+      // }
 
-      const { raw } = await Price.createQueryBuilder()
+      const { raw } = await Penalty.createQueryBuilder()
         .insert()
-        .into(Price)
+        .into(Penalty)
         .values({
-          price,
+          penalty_name,
+          penalty,
+          workers,
         })
-        .returning(['price'])
+        .returning('*')
         .execute();
 
       return {
@@ -55,7 +53,7 @@ export class PenaltyServic {
     }
   }
 
-  async provicesUpdate(param, req) {
+  async penaltyUpdate(param, req) {
     try {
       const { price } = req?.body;
       if (!price) {
@@ -64,11 +62,11 @@ export class PenaltyServic {
 
       const { id } = param;
 
-      const { raw } = await Price.createQueryBuilder()
+      const { raw } = await Penalty.createQueryBuilder()
         .update(Price)
         .set({ price })
         .where({ price_id: id })
-        .returning(['price'])
+        .returning('*')
         .execute();
 
       return {
@@ -82,15 +80,15 @@ export class PenaltyServic {
     }
   }
 
-  async provicesDelete(param) {
+  async penaltyDelete(param) {
     try {
       const { id } = param;
 
-      const { raw } = await Price.createQueryBuilder()
+      const { raw } = await Penalty.createQueryBuilder()
         .softDelete()
-        .from(Price)
+        .from(Penalty)
         .where({ price_id: id })
-        .returning(['price'])
+        .returning('*')
         .execute();
 
       return {
