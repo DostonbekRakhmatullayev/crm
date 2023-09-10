@@ -46,6 +46,14 @@ export class WorkersService {
           createdAt: true,
         },
       });
+
+      if (!user) {
+        return {
+          status: 404,
+          message: 'User is not found',
+        };
+      }
+
       return user;
     } catch (error) {
       console.log(error.message);
@@ -67,6 +75,9 @@ export class WorkersService {
         personal_data,
       } = req.body;
 
+      console.log(categories_id);
+      console.log(provinces_id);
+
       const { raw } = await Workers.createQueryBuilder()
         .insert()
         .into(Workers)
@@ -82,7 +93,7 @@ export class WorkersService {
           personal_data,
           images: `/img/${file.filename}`,
         })
-        .returning(['*'])
+        .returning('*')
         .execute();
 
       return {
@@ -137,18 +148,7 @@ export class WorkersService {
         .where({
           workers_id: id,
         })
-        .returning([
-          'first_name',
-          'last_name',
-          'categories',
-          'date_of_birth',
-          'gender',
-          'phone_number',
-          'provinces',
-          'personal_information',
-          'personal_data',
-          'images',
-        ])
+        .returning('*')
         .execute();
       console.log(raw);
 
@@ -171,18 +171,7 @@ export class WorkersService {
         .softDelete()
         .from(Workers)
         .where({ workers_id: id })
-        .returning([
-          'first_name',
-          'last_name',
-          'categories',
-          'date_of_birth',
-          'gender',
-          'phone_number',
-          'provinces',
-          'personal_information',
-          'personal_data',
-          'images',
-        ])
+        .returning('*')
         .execute();
 
       return {
