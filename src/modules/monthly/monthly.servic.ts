@@ -17,11 +17,17 @@ export class MonthlyServic {
 
   async monthlyCreate(req) {
     try {
-      const { price_id } = req?.body;
+      const { price_id, workers_id } = req?.body;
 
       if (!price_id) {
         throw new HttpException(
           'price_id is not found',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      if (!workers_id) {
+        throw new HttpException(
+          'workers_id is not found',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -40,22 +46,14 @@ export class MonthlyServic {
           message: 'There is no such price',
         };
       }
-
-      monthly.filter((e) => {
-        if (e.monthly_name == provices.price) {
-          return {
-            status: 409,
-            message: 'Such a price is available',
-          };
-        }
-      });
       const { raw } = await Monthly.createQueryBuilder()
         .insert()
         .into(Monthly)
         .values({
           monthly_name: provices.price,
+          workers: workers_id,
         })
-        .returning(['monthly_name'])
+        .returning('*')
         .execute();
 
       return {
