@@ -94,7 +94,6 @@ export class Workers extends BaseEntity {
   advance: Advance[];
 
   @OneToOne(() => Monthly, (monthly) => monthly.workers)
-  @JoinColumn()
   monthly: Monthly;
 
   @ManyToOne(() => Categories, (categories) => categories.workers)

@@ -17,8 +17,6 @@ export class ChikTokenMiddleware implements NestMiddleware {
       }
 
       const { token } = req?.headers as any;
-      console.log(token);
-
       const { id } = jwt.verify(token);
 
       const users = await Admin.findOne({

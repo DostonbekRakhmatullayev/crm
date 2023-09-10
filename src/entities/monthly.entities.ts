@@ -7,6 +7,7 @@ import {
   DeleteDateColumn,
   OneToOne,
   BaseEntity,
+  JoinColumn,
 } from 'typeorm';
 import { Workers } from './workers.entities';
 
@@ -37,6 +38,7 @@ export class Monthly extends BaseEntity {
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
-  @OneToOne(() => Workers, (workers) => workers.monthly, )
+  @OneToOne(() => Workers, (workers) => workers.monthly)
+  @JoinColumn()
   workers: Workers;
 }
