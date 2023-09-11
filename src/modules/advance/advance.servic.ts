@@ -1,44 +1,30 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import { Advance } from 'src/entities/advance.entities';
 import { Penalty } from 'src/entities/penalty.entites';
 
 import { Price } from 'src/entities/price.entities';
 
 @Injectable()
-export class PenaltyServic {
+export class AdvanceServic {
   async findAll() {
     try {
-      const penalty = await Penalty.find({});
+      const advance = await Advance.find();
 
-      return penalty;
+      return advance;
     } catch (error) {
       console.log(error.message);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
-  async penaltyCreate(req) {
+  async advanceCreate(body) {
     try {
-      const { penalty_name, penalty, workers } = req?.body;
+      const { advance, advance_name, workers } = body;
 
-      // const provices = await Penalty.findOne({
-      //   where: {},
-      // });
-
-      // if (provices) {
-      //   return {
-      //     status: 409,
-      //     message: 'There is such a province',
-      //   };
-      // }
-
-      const { raw } = await Penalty.createQueryBuilder()
+      const { raw } = await Advance.createQueryBuilder()
         .insert()
-        .into(Penalty)
-        .values({
-          penalty_name,
-          penalty,
-          workers,
-        })
+        .into(Advance)
+        .values({ advance_name, workers, advance: advance })
         .returning('*')
         .execute();
 
@@ -53,16 +39,16 @@ export class PenaltyServic {
     }
   }
 
-  async penaltyUpdate(param, req) {
+  async advanceUpdate(param, body) {
     try {
-      const { penalty, penalty_name } = req?.body;
+      const { advance, advance_name } = body;
 
       const { id } = param;
 
-      const { raw } = await Penalty.createQueryBuilder()
-        .update(Penalty)
-        .set({ penalty, penalty_name })
-        .where({ penalty_id: id })
+      const { raw } = await Advance.createQueryBuilder()
+        .update(Advance)
+        .set({ advance, advance_name })
+        .where({ advance_id: id })
         .returning('*')
         .execute();
 
@@ -77,14 +63,14 @@ export class PenaltyServic {
     }
   }
 
-  async penaltyDelete(param) {
+  async advanceDelete(param) {
     try {
       const { id } = param;
 
-      const { raw } = await Penalty.createQueryBuilder()
+      const { raw } = await Advance.createQueryBuilder()
         .softDelete()
-        .from(Penalty)
-        .where({ penalty_id: id })
+        .from(Advance)
+        .where({ advance_id: id })
         .returning('*')
         .execute();
 

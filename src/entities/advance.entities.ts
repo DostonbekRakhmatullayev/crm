@@ -24,7 +24,7 @@ export class Advance extends BaseEntity {
   advance: number;
 
   @Column({
-    name: 'penalty_name',
+    name: 'advance_name',
     default: '',
   })
   advance_name: string;

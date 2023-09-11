@@ -11,6 +11,7 @@ import { MonthlyModule } from './modules/monthly/monthly.module';
 import { ImgModule } from './modules/images/images.modules';
 import { PriceModule } from './modules/price/price.module';
 import { PenaltyModule } from './modules/penalty/penalty.module';
+import { AdvanceModule } from './modules/advance/advance.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { PenaltyModule } from './modules/penalty/penalty.module';
     PriceModule,
     ImgModule,
     PenaltyModule,
+    AdvanceModule,
   ],
 })
 export class AppModule {}
