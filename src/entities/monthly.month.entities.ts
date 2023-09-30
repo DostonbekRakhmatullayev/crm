@@ -11,23 +11,23 @@ import {
 import { Workers } from './workers.entities';
 
 @Entity({
-  name: 'monthlydaily',
+  name: 'monthlymonth',
 })
-export class MonthlyDaily extends BaseEntity {
+export class MonthlyMonth extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  monthlydaily_id: string;
+  monthlymonth_id: string;
 
   @Column({
-    name: 'monthly_name',
+    name: 'monthly_month_name',
     default: 0,
   })
-  monthly_name: number;
+  monthlymonth_name: string;
 
   @Column({
-    name: 'monthlydaily_name',
+    name: 'monthly_month_money',
     default: 0,
   })
-  monthlydaily_name: number;
+  monthlydaily_money: number;
 
   @Column({
     name: 'comment',

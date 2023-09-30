@@ -10,6 +10,8 @@ monthly == oylik ishchilardiki
 
 monthly_daily ==  oylik har kuni
 
+monthly_month == oylik oylik olish
+
 advance == avans
 
 penalty == jarima
@@ -30,3 +32,6 @@ provinces {
   Surxondaryo = 'Surxondaryo',
   Qoraqalpogiston = "Qoraqalpog'iston",
 }
+
+
+

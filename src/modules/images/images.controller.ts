@@ -5,7 +5,7 @@ import { ImagesServic } from './images.servic';
 export class ImagesController {
   constructor(private readonly imagesServic: ImagesServic) {}
 
-  @Get('/:filname')
+  @Get('/:filename')
   async findAll(@Param() param, @Res() res: Response) {
     return await this.imagesServic.findAll(res, param);
   }

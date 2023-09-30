@@ -5,7 +5,7 @@ import * as path from 'path';
 export class ImagesServic {
   async findAll(res, param) {
     try {
-      const file = param?.filname;
+      const file = param?.filename;
       //   return categories;
       return res.sendFile(path.join(process.cwd(), 'uploads', file));
     } catch (error) {

@@ -7,7 +7,7 @@ class JwtStrategy {
   private readonly JWT_SECRET = process.env.SECRET_KEY;
 
   sign(payload: any): string {
-    return jwt.sign(payload, this.JWT_SECRET);
+    return jwt.sign(payload, this.JWT_SECRET, { expiresIn: '6h' });
   }
 
   verify(token: string): any {

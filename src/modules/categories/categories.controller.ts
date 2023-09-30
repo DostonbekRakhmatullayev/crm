@@ -23,8 +23,6 @@ export class CategoriesController {
 
   @Post('/categories')
   async categoriesCreate(@Body() body: {}, @Req() req: CategoriesCreateDto) {
-    console.log(body);
-
     return await this.categoriesServic.categoriesCreate(req);
   }
 
