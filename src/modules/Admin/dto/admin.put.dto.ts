@@ -1,6 +1,7 @@
+import { Admin } from './../../../entities/admin.entities';
 import { IsString } from 'class-validator';
 
-export class NewsUpdateDto {
+export class AdminUpdateDto {
   @IsString()
   readonly first_name?: string;
 
