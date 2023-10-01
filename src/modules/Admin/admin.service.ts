@@ -2,19 +2,21 @@ import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import jwt from 'src/utils/jwt';
 import { Admin } from 'src/entities/admin.entities';
 import { retry } from 'rxjs';
+import { response } from 'src/types/interfaces';
 
 @Injectable()
-export class AdminServic {
-  async findAllNoActiv(req) {
+export class AdminService {
+  async findAllNoActive(req: any): Promise<response<Admin[] | null>> {
     try {
       const { token } = req.headers;
 
       const { role } = jwt.verify(token);
 
-      if (role != 'subadmin') {
+      if (role != 'superadmin') {
         return {
           status: 429,
-          message: 'Siz assosiy admin emassiz',
+          data: null,
+          message: 'Siz superadmin emassiz',
         };
       }
 
@@ -38,24 +40,25 @@ export class AdminServic {
 
       return {
         status: 201,
-        message: role == 'subadmin' ? 'Siz Asosiy adminsiz' : 'Siz Adminsiz',
         data: user,
+        message: role == 'superadmin' ? 'Siz superadminsiz' : 'Siz subadminsiz',
       };
     } catch (error) {
       console.log(error.message);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
-  async findAll(req) {
+  async findAll(req: any): Promise<response<Admin[] | null>> {
     try {
       const { token } = req.headers;
 
       const { role } = jwt.verify(token);
 
-      if (role != 'subadmin') {
+      if (role != 'superdmin') {
         return {
           status: 429,
-          message: 'Siz assosiy admin emassiz',
+          data: null,
+          message: 'Siz superadmin emassiz',
         };
       }
 
@@ -79,35 +82,33 @@ export class AdminServic {
 
       return {
         status: 201,
-        message: role == 'subadmin' ? 'Siz Asosiy adminsiz' : 'Siz Adminsiz',
         data: user,
+        message: role == 'superadmin' ? 'Siz superadminsiz' : 'Siz subadminsiz',
       };
     } catch (error) {
       console.log(error.message);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
-  async findOne(req) {
+  async findOne(req: any): Promise<response<Admin | null>> {
     try {
       const { token } = req.headers;
 
       const { id, role } = jwt.verify(token);
 
-      const user = await Admin.find({
-        where: { id },
-        select: {
-          id: true,
-          first_name: true,
-          last_name: true,
-          images: true,
-          email: true,
-          password: true,
-        },
-      });
+      const user = await Admin.findOneBy({ id });
+
+      if (user) {
+        return {
+          status: 404,
+          message: 'Admin topiladi',
+          data: null,
+        };
+      }
 
       return {
         status: 201,
-        message: role == 'subadmin' ? 'Siz Asosiy adminsiz' : 'Siz Adminsiz',
+        message: role == 'superadmin' ? 'Siz superadminsiz' : 'Siz subadminsiz',
         data: user,
       };
     } catch (error) {
@@ -116,25 +117,27 @@ export class AdminServic {
     }
   }
 
-  async adminCreate(file, req) {
+  async adminCreate(
+    file: any,
+    req: any,
+  ): Promise<{
+    status: number;
+    token?: string;
+    message: string;
+    data?: null | Admin;
+  }> {
     try {
       const { first_name, last_name, email, password } = req.body;
 
-      const users = await Admin.findOne({
-        where: {
-          password,
-        },
-      });
-      const userss = await Admin.findOne({
-        where: {
-          email,
-        },
+      const users = await Admin.findOneBy({
+        email,
       });
 
-      if (users || userss) {
+      if (users) {
         return {
           status: 409,
-          message: 'There are such users',
+          data: null,
+          message: 'Bunday foydalanuvchi mavjud',
         };
       }
 
@@ -155,7 +158,6 @@ export class AdminServic {
       const data = await Admin.findOne({
         where: { id },
       });
-
       const token = jwt.sign({
         password: data.password,
         email: data.email,
@@ -176,9 +178,14 @@ export class AdminServic {
     }
   }
 
-  async adminLogin(req) {
+  async adminLogin(dto: any): Promise<{
+    status: number;
+    token?: string;
+    message: string;
+    data?: null | Admin;
+  }> {
     try {
-      const { email, password } = req.body;
+      const { email, password } = dto.body;
 
       const user = await Admin.findOne({
         where: { password, email },
@@ -193,7 +200,7 @@ export class AdminServic {
 
       return {
         status: 201,
-        message: 'Success',
+        message: 'Kirish muvaffaqiyatli yakunlandi',
         token: token,
       };
     } catch (error) {
@@ -202,7 +209,7 @@ export class AdminServic {
     }
   }
 
-  async putAdmin(req, file) {
+  async putAdmin(req: any, file: any): Promise<response<Admin | null>> {
     try {
       const { first_name, last_name, email, password } = req.body;
 
@@ -210,7 +217,8 @@ export class AdminServic {
       if (!token) {
         return {
           status: 400,
-          message: 'Token is not found',
+          data: null,
+          message: 'Token topilmadi',
         };
       }
 
@@ -226,16 +234,18 @@ export class AdminServic {
       if (!user) {
         return {
           status: 404,
-          message: 'This token is invalid',
+          data: null,
+          message: 'Token yaroqsiz',
         };
       }
 
-      if (email == user.email || password == user.password) {
-        return {
-          status: 409,
-          message: 'There are such users',
-        };
-      }
+      // if (email == user.email || password == user.password) {
+      //   return {
+      //     status: 409,
+      //     data: null,
+      //     message: 'Bunday foydalanuvchi mavjud',
+      //   };
+      // }
 
       const filename = file?.filename || user.images.split('/')[1];
 
@@ -253,6 +263,7 @@ export class AdminServic {
 
       return {
         status: 200,
+        data: data.raw,
         message: 'Success',
       };
     } catch (error) {
@@ -261,7 +272,7 @@ export class AdminServic {
     }
   }
 
-  async adminDelete(req, param) {
+  async adminDelete(req: any, param: any): Promise<response<Admin | null>> {
     try {
       const token = req?.headers?.token;
 
@@ -271,7 +282,8 @@ export class AdminServic {
       if (role != 'subadmin') {
         return {
           status: 429,
-          message: 'Iz asosiy admin emassiz sizga delete qilishga ruxsat yuq',
+          data: null,
+          message: 'Siz superadmin emassiz ,sizga o`chirishga ruxsat yo`q',
         };
       }
 
@@ -284,11 +296,12 @@ export class AdminServic {
       if (data.role == 'subadmin') {
         return {
           status: 429,
-          message: 'Bu admindi delete qilib bulmaydi',
+          data: null,
+          message: 'Bu adminni o`chirib bo`lmaydi',
         };
       }
 
-      const aaa = await Admin.createQueryBuilder()
+      const deletedAdmin = await Admin.createQueryBuilder()
         .update(Admin)
         .set({
           isActive: 'noActive',
@@ -298,6 +311,7 @@ export class AdminServic {
         .execute();
       return {
         status: 200,
+        data: deletedAdmin.raw,
         message: 'ok',
       };
     } catch (error) {
