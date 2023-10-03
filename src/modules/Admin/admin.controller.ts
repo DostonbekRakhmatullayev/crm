@@ -52,7 +52,7 @@ export class AdminController {
     @UploadedFile() file?: Express.Multer.File,
     @Req() req?: AdminUpdateDto,
   ) {
-    return await this.adminService.putAdmin(req, file);
+    return await this.adminService.adminUpdate(req, file);
   }
 
   @Post('/login')
