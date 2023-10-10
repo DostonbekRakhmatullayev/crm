@@ -12,16 +12,16 @@ import {
 import { Workers } from './workers.entities';
 
 @Entity({
-  name: 'monthly',
+  name: 'salary',
 })
-export class Monthly extends BaseEntity {
+export class Salary extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  monthly_id: string;
+  salary_id: string;
 
   @Column({
-    name: 'monthly_name',
+    name: 'salary_name',
   })
-  monthly_name: number;
+  salary_name: number;
 
   @Column({
     name: 'isActive',
@@ -38,7 +38,7 @@ export class Monthly extends BaseEntity {
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
-  @OneToOne(() => Workers, (workers) => workers.monthly)
+  @OneToOne(() => Workers, (workers) => workers.salary)
   @JoinColumn()
   workers: Workers;
 }

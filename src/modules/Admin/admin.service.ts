@@ -1,7 +1,6 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import jwt from 'src/utils/jwt';
 import { Admin } from 'src/entities/admin.entities';
-import { retry } from 'rxjs';
 import { response } from 'src/types/interfaces';
 
 @Injectable()

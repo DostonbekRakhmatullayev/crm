@@ -3,21 +3,26 @@ import { Advance } from 'src/entities/advance.entities';
 import { Penalty } from 'src/entities/penalty.entites';
 
 import { Price } from 'src/entities/price.entities';
+import { response } from 'src/types/interfaces';
 
 @Injectable()
-export class AdvanceServic {
-  async findAll() {
+export class AdvanceService {
+  async findAll(): Promise<response<Advance[]>> {
     try {
       const advance = await Advance.find();
 
-      return advance;
+      return {
+        status: HttpStatus.OK,
+        data: advance,
+        message: 'Advances successfully fetched',
+      };
     } catch (error) {
       console.log(error.message);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
-  async advanceCreate(body) {
+  async advanceCreate(body:any): Promise<response<Advance>> {
     try {
       const { advance, advance_name, workers } = body;
 
@@ -29,9 +34,9 @@ export class AdvanceServic {
         .execute();
 
       return {
-        status: 201,
-        message: 'Success',
+        status: HttpStatus.CREATED,
         data: raw,
+        message: 'Avance successfully created',
       };
     } catch (error) {
       console.log(error.message);
@@ -39,7 +44,7 @@ export class AdvanceServic {
     }
   }
 
-  async advanceUpdate(param, body) {
+  async advanceUpdate(param:any, body:any): Promise<response<Advance>> {
     try {
       const { advance, advance_name } = body;
 
@@ -53,9 +58,9 @@ export class AdvanceServic {
         .execute();
 
       return {
-        status: 200,
-        message: 'Success',
+        status: HttpStatus.OK,
         data: raw,
+        message: 'Advance successfully updated',
       };
     } catch (error) {
       console.log(error.message);
@@ -63,7 +68,7 @@ export class AdvanceServic {
     }
   }
 
-  async advanceDelete(param) {
+  async advanceDelete(param:any): Promise<response<Advance>> {
     try {
       const { id } = param;
 
@@ -76,7 +81,7 @@ export class AdvanceServic {
 
       return {
         status: 200,
-        message: 'Success',
+        message: 'Advance successfully deleted',
         data: raw,
       };
     } catch (error) {

@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
 import { MiddlewareConsumer } from '@nestjs/common/interfaces';
-import { ChikTokenMiddleware } from 'src/middleware/chiktoken.middleware';
+import { CheckTokenMiddleware } from 'src/middleware/checktoken.middleware';
 import { CategoriesController } from './categories.controller';
-import { CategoriesServic } from './categories.servic';
+import { CategoriesService } from './categories.service';
 
 @Module({
   imports: [],
   controllers: [CategoriesController],
-  providers: [CategoriesServic],
+  providers: [CategoriesService],
 })
 export class CategoriesModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(ChikTokenMiddleware).forRoutes('/categories');
+    consumer.apply(CheckTokenMiddleware).forRoutes('/categories');
   }
 }

@@ -1,15 +1,16 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { ChikTokenMiddleware } from 'src/middleware/chiktoken.middleware';
+
 import { AdvanceController } from './advance.controller';
-import { AdvanceServic } from './advance.servic';
+import { AdvanceService } from './advance.service';
+import { CheckTokenMiddleware } from 'src/middleware/checktoken.middleware';
 
 @Module({
   imports: [],
   controllers: [AdvanceController],
-  providers: [AdvanceServic],
+  providers: [AdvanceService],
 })
 export class AdvanceModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(ChikTokenMiddleware).forRoutes('/advance');
+    consumer.apply(CheckTokenMiddleware).forRoutes('/advance');
   }
 }

@@ -13,7 +13,7 @@ import {
 } from 'typeorm';
 import { Advance } from './advance.entities';
 import { Categories } from './categories.entities';
-import { Monthly } from './monthly.entities';
+import { Salary } from './salary.entities';
 import { MonthlyDaily } from './monthlyDaily.entities';
 import { Penalty } from './penalty.entites';
 import { Provinces } from './provinces.entities';
@@ -93,8 +93,8 @@ export class Workers extends BaseEntity {
   @OneToMany(() => Advance, (advance) => advance.workers)
   advance: Advance[];
 
-  @OneToOne(() => Monthly, (monthly) => monthly.workers)
-  monthly: Monthly;
+  @OneToOne(() => Salary, (salary) => salary.workers)
+  salary: Salary;
 
   @ManyToOne(() => Categories, (categories) => categories.workers)
   categories: Categories;

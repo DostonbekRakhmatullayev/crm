@@ -1,5 +1,5 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { ChikTokenMiddleware } from 'src/middleware/chiktoken.middleware';
+import { ChikTokenMiddleware } from 'src/middleware/checktoken.middleware';
 import { PenaltyController } from './penalty.controller';
 import { PenaltyServic } from './penalty.servic';
 

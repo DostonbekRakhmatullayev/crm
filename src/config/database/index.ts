@@ -3,7 +3,7 @@ import { Admin } from 'src/entities/admin.entities';
 import { Categories } from 'src/entities/categories.entities';
 import { Workers } from 'src/entities/workers.entities';
 import { Provinces } from 'src/entities/provinces.entities';
-import { Monthly } from 'src/entities/monthly.entities';
+import { Monthly } from 'src/entities/salary.entities';
 import { Price } from 'src/entities/price.entities';
 import { Penalty } from 'src/entities/penalty.entites';
 import { Advance } from 'src/entities/advance.entities';
