@@ -14,7 +14,7 @@ import {
 import { Advance } from './advance.entities';
 import { Categories } from './categories.entities';
 import { Salary } from './salary.entities';
-import { MonthlyDaily } from './monthlyDaily.entities';
+import { Daily } from './daily.entities';
 import { Penalty } from './penalty.entites';
 import { Provinces } from './provinces.entities';
 
@@ -84,8 +84,8 @@ export class Workers extends BaseEntity {
   })
   isActive: string;
 
-  @OneToMany(() => MonthlyDaily, (monthlyDaily) => monthlyDaily.workers)
-  monthlyDaily: MonthlyDaily[];
+  @OneToMany(() => Daily, (daily) => daily.workers)
+ daily: Daily[];
 
   @OneToMany(() => Penalty, (penalty) => penalty.workers)
   penalty: Penalty[];

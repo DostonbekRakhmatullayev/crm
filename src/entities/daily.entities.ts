@@ -13,21 +13,21 @@ import { Workers } from './workers.entities';
 @Entity({
   name: 'monthlydaily',
 })
-export class MonthlyDaily extends BaseEntity {
+export class Daily extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  monthlydaily_id: string;
+  daily_id: string;
 
   @Column({
-    name: 'monthly_name',
+    name: 'daily_name',
     default: 0,
   })
-  monthly_name: number;
+  salary_name: number;
 
   @Column({
-    name: 'monthlydaily_name',
+    name: 'daily_name',
     default: 0,
   })
-  monthlydaily_name: number;
+  daily_name: number;
 
   @Column({
     name: 'comment',
@@ -50,6 +50,6 @@ export class MonthlyDaily extends BaseEntity {
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
-  @ManyToOne(() => Workers, (workers) => workers.monthlyDaily)
+  @ManyToOne(() => Workers, (workers) => workers.daily)
   workers: Workers;
 }

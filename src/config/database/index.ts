@@ -3,11 +3,11 @@ import { Admin } from 'src/entities/admin.entities';
 import { Categories } from 'src/entities/categories.entities';
 import { Workers } from 'src/entities/workers.entities';
 import { Provinces } from 'src/entities/provinces.entities';
-import { Monthly } from 'src/entities/salary.entities';
+import { Salary } from 'src/entities/salary.entities';
 import { Price } from 'src/entities/price.entities';
 import { Penalty } from 'src/entities/penalty.entites';
 import { Advance } from 'src/entities/advance.entities';
-import { MonthlyDaily } from 'src/entities/monthlyDaily.entities';
+import { Daily } from 'src/entities/daily.entities';
 export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
   useFactory: async () => {
     return {
@@ -23,8 +23,8 @@ export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
         Categories,
         Provinces,
         Workers,
-        Monthly,
-        MonthlyDaily,
+        Salary,
+        Daily,
         Price,
         Penalty,
         Advance,

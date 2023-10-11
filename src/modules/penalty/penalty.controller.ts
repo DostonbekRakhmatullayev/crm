@@ -1,29 +1,29 @@
 import { Controller, Get, Req, Post, Put, Param, Delete } from '@nestjs/common';
 import { PricCreateDto } from '../price/dto/pric.create.dto';
 import { PricUpdateDto } from '../price/dto/pric.update.dto';
-import { PenaltyServic } from './penalty.servic';
+import { PenaltyService } from './penalty.service';
 
 @Controller('/penalty')
 export class PenaltyController {
-  constructor(private readonly penaltyServic: PenaltyServic) {}
+  constructor(private readonly penaltyService: PenaltyService) {}
 
   @Get('/get')
   async findAll(@Req() req: Request) {
-    return await this.penaltyServic.findAll();
+    return await this.penaltyService.findAll();
   }
 
   @Post('/create')
   async penaltyCreate(@Req() req: PricCreateDto) {
-    return await this.penaltyServic.penaltyCreate(req);
+    return await this.penaltyService.penaltyCreate(req);
   }
 
   @Put('/update/:id')
   async penaltyUpdate(@Param() param: string, @Req() req?: PricUpdateDto) {
-    return await this.penaltyServic.penaltyUpdate(param, req);
+    return await this.penaltyService.penaltyUpdate(param, req);
   }
 
   @Delete('/delete/:id')
   async penaltyDelete(@Param() param: string) {
-    return await this.penaltyServic.penaltyDelete(param);
+    return await this.penaltyService.penaltyDelete(param);
   }
 }

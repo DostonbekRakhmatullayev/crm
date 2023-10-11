@@ -12,7 +12,7 @@ import { ImgModule } from './modules/images/images.modules';
 import { PriceModule } from './modules/price/price.module';
 import { PenaltyModule } from './modules/penalty/penalty.module';
 import { AdvanceModule } from './modules/advance/advance.module';
-import { MonthlyDaily } from './entities/monthlyDaily.entities';
+import { Daily } from './entities/daily.entities';
 
 @Module({
   imports: [
@@ -27,7 +27,7 @@ import { MonthlyDaily } from './entities/monthlyDaily.entities';
     ImgModule,
     PenaltyModule,
     AdvanceModule,
-    MonthlyDaily,
+    Daily,
   ],
 })
 export class AppModule {}

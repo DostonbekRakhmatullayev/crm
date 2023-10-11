@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ChikTokenMiddleware } from 'src/middleware/checktoken.middleware';
 import { PricController } from './price.controller';
-import { PricServic } from './price.servic';
+import { PricServic } from './price.service';
 
 @Module({
   imports: [],

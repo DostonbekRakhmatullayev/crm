@@ -1,14 +1,19 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 
 import { Price } from 'src/entities/price.entities';
+import { response } from 'src/types/interfaces';
 
 @Injectable()
-export class PricServic {
-  async findAll() {
+export class PricService {
+  async findAll(): Promise<response<Price[]>> {
     try {
-      const pric = await Price.find({});
+      const price = await Price.find({});
 
-      return pric;
+      return {
+        status: HttpStatus.OK,
+        data:price,
+        message:'Prices successfully fetched'
+      };
     } catch (error) {
       console.log(error.message);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
