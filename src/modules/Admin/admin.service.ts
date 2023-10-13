@@ -1,7 +1,6 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import jwt from 'src/utils/jwt';
 import { Admin } from 'src/entities/admin.entities';
-import { retry } from 'rxjs';
 import { response } from 'src/types/interfaces';
 
 @Injectable()
@@ -54,7 +53,7 @@ export class AdminService {
 
       const { role } = jwt.verify(token);
 
-      if (role != 'superdmin') {
+      if (role != 'superadmin') {
         return {
           status: 429,
           data: null,
@@ -202,14 +201,14 @@ export class AdminService {
         status: 201,
         message: 'Kirish muvaffaqiyatli yakunlandi',
         token: token,
-      };
+      };  
     } catch (error) {
       console.log(error.message);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
-  async putAdmin(req: any, file: any): Promise<response<Admin | null>> {
+  async adminUpdate(req: any, file: any): Promise<response<Admin | null>> {
     try {
       const { first_name, last_name, email, password } = req.body;
 

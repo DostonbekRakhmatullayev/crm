@@ -1,7 +1,7 @@
 import { Controller, Get, Req, Post, Put, Param, Delete } from '@nestjs/common';
 import { PricCreateDto } from './dto/pric.create.dto';
 import { PricUpdateDto } from './dto/pric.update.dto';
-import { PricServic } from './price.servic';
+import { PricServic } from './price.service';
 
 @Controller('/price')
 export class PricController {

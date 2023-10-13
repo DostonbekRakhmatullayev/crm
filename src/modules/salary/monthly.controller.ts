@@ -1,7 +1,7 @@
 import { Controller, Get, Req, Post, Put, Param, Delete } from '@nestjs/common';
 import { Request } from 'express';
 
-import { MonthlyServic } from './monthly.servic';
+import { MonthlyServic } from './salary.service';
 
 @Controller('/monthly')
 export class MonthlyController {

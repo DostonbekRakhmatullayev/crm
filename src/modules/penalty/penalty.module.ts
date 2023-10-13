@@ -1,15 +1,15 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { ChikTokenMiddleware } from 'src/middleware/chiktoken.middleware';
+import { CheckTokenMiddleware } from 'src/middleware/checktoken.middleware';
 import { PenaltyController } from './penalty.controller';
-import { PenaltyServic } from './penalty.servic';
+import { PenaltyService } from './penalty.service';
 
 @Module({
   imports: [],
   controllers: [PenaltyController],
-  providers: [PenaltyServic],
+  providers: [PenaltyService],
 })
 export class PenaltyModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(ChikTokenMiddleware).forRoutes('/penalty');
+    consumer.apply(CheckTokenMiddleware).forRoutes('/penalty');
   }
 }

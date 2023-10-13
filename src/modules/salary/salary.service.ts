@@ -1,21 +1,26 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
-import { Monthly } from 'src/entities/monthly.entities';
+import { Salary } from 'src/entities/salary.entities';
 import { Price } from 'src/entities/price.entities';
+import { response } from 'src/types/interfaces';
 
 @Injectable()
-export class MonthlyServic {
-  async findAll() {
+export class SalaryService {
+  async findAll(): Promise<response<Salary[]>> {
     try {
-      const monthly = await Monthly.find();
+      const salaries = await Salary.find();
 
-      return monthly;
+      return {
+        status: HttpStatus.OK,
+        data: salaries,
+        message: 'Data successfully fetched',
+      };
     } catch (error) {
       console.log(error.message);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
-  async monthlyCreate(req) {
+  async salaryCreate(req: any): Promise<response<Salary>> {
     try {
       const { price_id, workers_id } = req?.body;
 
@@ -32,25 +37,26 @@ export class MonthlyServic {
         );
       }
 
-      const monthly = await Monthly.find();
+      const salary = await Salary.find();
 
-      const provices = await Price.findOne({
+      const provinces = await Price.findOne({
         where: {
           price_id,
         },
       });
 
-      if (!provices) {
+      if (!provinces) {
         return {
           status: 409,
+          data: null,
           message: 'There is no such price',
         };
       }
-      const { raw } = await Monthly.createQueryBuilder()
+      const { raw } = await Salary.createQueryBuilder()
         .insert()
-        .into(Monthly)
+        .into(Salary)
         .values({
-          monthly_name: provices.price,
+          salary_name: provinces.price,
           workers: workers_id,
         })
         .returning('*')
@@ -58,8 +64,8 @@ export class MonthlyServic {
 
       return {
         status: 201,
-        message: 'Success',
         data: raw,
+        message: 'Salary successfully created',
       };
     } catch (error) {
       console.log(error.message);
@@ -67,29 +73,29 @@ export class MonthlyServic {
     }
   }
 
-  async monthlyUpdate(param, req) {
+  async salaryUpdate(param:any, req:any): Promise<response<Salary>> {
     try {
-      const { monthly_name } = req?.body;
-      if (!monthly_name) {
+      const { salary_name } = req?.body;
+      if (!salary_name) {
         throw new HttpException(
-          'monthly_name is not found',
+          'salary_name is not found',
           HttpStatus.BAD_REQUEST,
         );
       }
 
       const { id } = param;
 
-      const { raw } = await Monthly.createQueryBuilder()
-        .update(Monthly)
-        .set({ monthly_name })
-        .where({ monthly_id: id })
-        .returning(['monthly_name'])
+      const { raw } = await Salary.createQueryBuilder()
+        .update(Salary)
+        .set({ salary_name })
+        .where({ salary_id: id })
+        .returning(['salary_name'])
         .execute();
 
       return {
-        status: 200,
-        message: 'Success',
+        status: HttpStatus.OK,
         data: raw,
+        message: 'Salary successfully updated',
       };
     } catch (error) {
       console.log(error.message);
@@ -97,21 +103,21 @@ export class MonthlyServic {
     }
   }
 
-  async monthlyDelete(param) {
+  async salaryDelete(param:any): Promise<response<Salary>> {
     try {
       const { id } = param;
 
-      const { raw } = await Monthly.createQueryBuilder()
+      const { raw } = await Salary.createQueryBuilder()
         .softDelete()
-        .from(Monthly)
-        .where({ monthly_id: id })
-        .returning(['monthly_name'])
+        .from(Salary)
+        .where({ salary_id: id })
+        .returning(['salary_name'])
         .execute();
 
       return {
         status: 200,
-        message: 'Success',
         data: raw,
+        message: 'Salary successfully deleted',
       };
     } catch (error) {
       console.log(error.message);

@@ -1,22 +1,27 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { Categories } from 'src/entities/categories.entities';
+import { response } from 'src/types/interfaces';
 
 @Injectable()
-export class CategoriesServic {
-  async findAll() {
+export class CategoriesService {
+  async findAll(): Promise<response<Categories[]>> {
     try {
       const categories = await Categories.find({
         select: { id: true, categories_name: true },
       });
 
-      return categories;
+      return {
+        status: HttpStatus.OK,
+        data: categories,
+        message:'Categories succeessfully fetched'
+      };
     } catch (error) {
       console.log(error.message);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
-  async categoriesCreate(req) {
+  async categoriesCreate(req:any) : Promise<response<Categories>> {
     try {
       const { categories_name } = req?.body;
       if (!categories_name) {
@@ -36,9 +41,9 @@ export class CategoriesServic {
         .execute();
 
       return {
-        status: 201,
-        message: 'Success',
+        status: HttpStatus.CREATED,
         data: raw,
+        message: 'Category successfully created',
       };
     } catch (error) {
       console.log(error.message);
@@ -46,7 +51,7 @@ export class CategoriesServic {
     }
   }
 
-  async categoriesUpdate(param, req) {
+  async categoriesUpdate(param:any, req:any): Promise<response<Categories>> {
     try {
       const { categories_name } = req?.body;
       if (!categories_name) {
@@ -66,9 +71,9 @@ export class CategoriesServic {
         .execute();
 
       return {
-        status: 200,
-        message: 'Success',
+        status: HttpStatus.OK,
         data: raw,
+        message: 'Category successfully updated',
       };
     } catch (error) {
       console.log(error.message);
@@ -76,7 +81,7 @@ export class CategoriesServic {
     }
   }
 
-  async categoriesDelete(param) {
+  async categoriesDelete(param:any): Promise<response<Categories>> {
     try {
       const { id } = param;
 
@@ -89,8 +94,8 @@ export class CategoriesServic {
 
       return {
         status: 200,
-        message: 'Success',
         data: raw,
+        message: 'Category successfully deleted',
       };
     } catch (error) {
       console.log(error.message);

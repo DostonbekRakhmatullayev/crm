@@ -9,7 +9,7 @@ import { Admin } from 'src/entities/admin.entities';
 import jwt from 'src/utils/jwt';
 
 @Injectable()
-export class ChikTokenMiddleware implements NestMiddleware {
+export class CheckTokenMiddleware implements NestMiddleware {
   async use(req: Request, _: Response, next: NextFunction) {
     try {
       if (!req?.headers.token) {

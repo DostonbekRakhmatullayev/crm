@@ -1,10 +1,11 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import jwt from 'src/utils/jwt';
 import { Workers } from 'src/entities/workers.entities';
+import { response } from 'src/types/interfaces';
 
 @Injectable()
 export class WorkersService {
-  async findAll() {
+  async findAll(): Promise<response<Workers[]>> {
     try {
       const user = await Workers.find({
         relations: {
@@ -28,13 +29,17 @@ export class WorkersService {
           },
         },
       });
-      return user;
+      return {
+        status: HttpStatus.OK,
+        data: user,
+        message: 'Workers successfully fetched',
+      };
     } catch (error) {
       console.log(error.message);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
-  async findOne(param) {
+  async findOne(param: any): Promise<response<Workers>> {
     try {
       const id = param?.id;
       const user = await Workers.findOne({
@@ -65,19 +70,24 @@ export class WorkersService {
 
       if (!user) {
         return {
-          status: 404,
-          message: 'User is not found',
+          status: HttpStatus.NOT_FOUND,
+          data: null,
+          message: 'Worker is not found',
         };
       }
 
-      return user;
+      return {
+        status: HttpStatus.OK,
+        data: user,
+        message: 'User fetched successfully',
+      };
     } catch (error) {
       console.log(error.message);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
-  async workersCreate(file, req) {
+  async workersCreate(file: any, req: any): Promise<response<Workers>> {
     try {
       const {
         first_name,
@@ -111,8 +121,8 @@ export class WorkersService {
 
       return {
         status: 201,
-        message: 'Success',
         data: raw,
+        message: 'Worker created successfully',
       };
     } catch (error) {
       console.log(error.message);
@@ -120,7 +130,11 @@ export class WorkersService {
     }
   }
 
-  async workersUpdate(req, file, param) {
+  async workersUpdate(
+    req: any,
+    file: any,
+    param: any,
+  ): Promise<response<Workers>> {
     try {
       const {
         first_name,
@@ -166,8 +180,8 @@ export class WorkersService {
 
       return {
         status: 200,
-        message: 'Success',
         data: raw,
+        message: 'Worker updated successfully',
       };
     } catch (error) {
       console.log(error.message);
@@ -175,7 +189,7 @@ export class WorkersService {
     }
   }
 
-  async workerDelete(param) {
+  async workerDelete(param: any): Promise<response<Workers>> {
     try {
       const { id } = param;
 
@@ -188,8 +202,8 @@ export class WorkersService {
 
       return {
         status: 200,
-        message: 'Success',
         data: raw,
+        message: 'Worker deleted successfully',
       };
     } catch (error) {
       console.log(error.message);

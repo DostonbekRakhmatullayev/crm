@@ -1,15 +1,14 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-
-import { AdvanceController } from './advance.controller';
-import { AdvanceService } from './advance.service';
 import { CheckTokenMiddleware } from 'src/middleware/checktoken.middleware';
+import { DailyController } from './Daily.controller';
+import { DailyService } from './Daily.service';
 
 @Module({
   imports: [],
-  controllers: [AdvanceController],
-  providers: [AdvanceService],
+  controllers: [DailyController],
+  providers: [DailyService],
 })
-export class AdvanceModule {
+export class DailyModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(CheckTokenMiddleware).forRoutes('/advance');
   }

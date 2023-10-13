@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { ChikTokenMiddleware } from 'src/middleware/chiktoken.middleware';
+import { ChikTokenMiddleware } from 'src/middleware/checktoken.middleware';
 import { MonthlyController } from './monthly.controller';
-import { MonthlyServic } from './monthly.servic';
+import { MonthlyServic } from './salary.service';
 
 @Module({
   imports: [],

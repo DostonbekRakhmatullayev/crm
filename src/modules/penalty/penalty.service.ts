@@ -2,35 +2,28 @@ import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { Penalty } from 'src/entities/penalty.entites';
 
 import { Price } from 'src/entities/price.entities';
+import { response } from 'src/types/interfaces';
 
 @Injectable()
-export class PenaltyServic {
-  async findAll() {
+export class PenaltyService {
+  async findAll(): Promise<response<Penalty[]>> {
     try {
       const penalty = await Penalty.find({});
 
-      return penalty;
+      return {
+        status: HttpStatus.OK,
+        data: penalty,
+        message:'Penalties successfully fetched'
+      };
     } catch (error) {
       console.log(error.message);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
-  async penaltyCreate(req) {
+  async penaltyCreate(req:any): Promise<response<Penalty>> {
     try {
       const { penalty_name, penalty, workers } = req?.body;
-
-      // const provices = await Penalty.findOne({
-      //   where: {},
-      // });
-
-      // if (provices) {
-      //   return {
-      //     status: 409,
-      //     message: 'There is such a province',
-      //   };
-      // }
-
       const { raw } = await Penalty.createQueryBuilder()
         .insert()
         .into(Penalty)
@@ -44,8 +37,8 @@ export class PenaltyServic {
 
       return {
         status: 201,
-        message: 'Success',
         data: raw,
+        message: 'Penalty created successfully',
       };
     } catch (error) {
       console.log(error.message);
@@ -53,7 +46,7 @@ export class PenaltyServic {
     }
   }
 
-  async penaltyUpdate(param, req) {
+  async penaltyUpdate(param:any, req:any): Promise<response<Penalty>> {
     try {
       const { penalty, penalty_name } = req?.body;
 
@@ -68,8 +61,8 @@ export class PenaltyServic {
 
       return {
         status: 200,
-        message: 'Success',
         data: raw,
+        message: 'Penalty updated successfully',
       };
     } catch (error) {
       console.log(error.message);
@@ -77,7 +70,7 @@ export class PenaltyServic {
     }
   }
 
-  async penaltyDelete(param) {
+  async penaltyDelete(param:any): Promise<response<Penalty>> {
     try {
       const { id } = param;
 
@@ -90,8 +83,8 @@ export class PenaltyServic {
 
       return {
         status: 200,
-        message: 'Success',
         data: raw,
+        message: 'Penalty deleted successfully',
       };
     } catch (error) {
       console.log(error.message);

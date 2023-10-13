@@ -2,38 +2,26 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToOne,
   BaseEntity,
+  JoinColumn,
 } from 'typeorm';
 import { Workers } from './workers.entities';
 
 @Entity({
-  name: 'monthlydaily',
+  name: 'salary',
 })
-export class MonthlyDaily extends BaseEntity {
+export class Salary extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  monthlydaily_id: string;
+  salary_id: string;
 
   @Column({
-    name: 'monthly_name',
-    default: 0,
+    name: 'salary_name',
   })
-  monthly_name: number;
-
-  @Column({
-    name: 'monthlydaily_name',
-    default: 0,
-  })
-  monthlydaily_name: number;
-
-  @Column({
-    name: 'comment',
-    default: 0,
-  })
-  comment: string;
+  salary_name: number;
 
   @Column({
     name: 'isActive',
@@ -50,6 +38,7 @@ export class MonthlyDaily extends BaseEntity {
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
-  @ManyToOne(() => Workers, (workers) => workers.monthlyDaily)
+  @OneToOne(() => Workers, (workers) => workers.salary)
+  @JoinColumn()
   workers: Workers;
 }
