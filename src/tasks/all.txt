@@ -1,19 +1,17 @@
 admin == admin bir nechta buladi 
-
 categories == categories 
-
 provinces ==  viloyatlar 
-
 workers ==   ishchilar
+
 
 monthly == oylik ishchilardiki
 
+Kunlig oylik olaydiganlar
 monthly_daily ==  oylik har kuni
 
+Oy lik birik tiriladi shu oylikdi oladi
 monthly_month == oylik oylik olish
-
 advance == avans
-
 penalty == jarima
 
 price == oyliklar narxlar 
