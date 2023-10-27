@@ -2,13 +2,9 @@ admin == admin bir nechta buladi 1
 categories == categories 1
 provinces ==  viloyatlar 
 workers ==   ishchilar
-
-
 monthly == oylik ishchilardiki
-
 Kunlig oylik olaydiganlar
-monthly_daily ==  oylik har kuni
-
+monthly_daily ==  oylik har kuni   === Salary bunday uzgardi 
 Oy lik birik tiriladi shu oylikdi oladi
 monthly_month == oylik oylik olish
 advance == avans 1

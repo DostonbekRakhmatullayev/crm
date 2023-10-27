@@ -9,6 +9,7 @@ import {
   BaseEntity,
 } from 'typeorm';
 import { Workers } from './workers.entities';
+// import { Workers } from '';
 
 @Entity({
   name: 'monthlymonth',
@@ -50,6 +51,6 @@ export class MonthlyMonth extends BaseEntity {
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
-  @ManyToOne(() => Workers, (workers) => workers.monthlyDaily)
+  @ManyToOne(() => Workers, (workers) => workers.monthlyMonth)
   workers: Workers;
 }
