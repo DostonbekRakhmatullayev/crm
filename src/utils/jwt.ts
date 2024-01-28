@@ -15,7 +15,7 @@ class JwtStrategy {
       const decoded = jwt.verify(token, this.JWT_SECRET);
       return decoded;
     } catch (error) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      throw new HttpException(error.message, error.status);
     }
   }
 }

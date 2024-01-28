@@ -177,14 +177,16 @@ export class AdminService {
     }
   }
 
-  async adminLogin(dto: any): Promise<{
+  async adminLogin(
+    dto: any,
+  ): Promise<{
     status: number;
     token?: string;
     message: string;
     data?: null | Admin;
   }> {
     try {
-      const { email, password } = dto.body;
+      const { email, password } = dto;
 
       const user = await Admin.findOne({
         where: { password, email },
@@ -201,7 +203,7 @@ export class AdminService {
         status: 201,
         message: 'Kirish muvaffaqiyatli yakunlandi',
         token: token,
-      };  
+      };
     } catch (error) {
       console.log(error.message);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
@@ -237,14 +239,6 @@ export class AdminService {
           message: 'Token yaroqsiz',
         };
       }
-
-      // if (email == user.email || password == user.password) {
-      //   return {
-      //     status: 409,
-      //     data: null,
-      //     message: 'Bunday foydalanuvchi mavjud',
-      //   };
-      // }
 
       const filename = file?.filename || user.images.split('/')[1];
 

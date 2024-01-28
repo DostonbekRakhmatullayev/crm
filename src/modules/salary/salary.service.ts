@@ -20,10 +20,9 @@ export class SalaryService {
     }
   }
 
-  async salaryCreate(req: any): Promise<response<Salary>> {
+  async salaryCreate(body: any): Promise<response<Salary>> {
     try {
-      const { price_id, workers_id } = req?.body;
-
+      const { price_id, workers_id } = body;
       if (!price_id) {
         throw new HttpException(
           'price_id is not found',
@@ -37,8 +36,6 @@ export class SalaryService {
         );
       }
 
-      const salary = await Salary.find();
-
       const provinces = await Price.findOne({
         where: {
           price_id,
@@ -48,15 +45,40 @@ export class SalaryService {
       if (!provinces) {
         return {
           status: 409,
-          data: null,
           message: 'There is no such price',
-        };
+        } as any;
       }
+
+      const salaries = await Salary.find({
+        relations: { workers: true },
+      });
+
+      // console.log(salaries);
+
+      if (salaries.length > 0) {
+        for (const e of salaries) {
+          if (e?.workers?.workers_id == workers_id) {
+            const { raw } = await Salary.createQueryBuilder()
+              .update(Salary)
+              .set({ salary_monthy: provinces.price })
+              .where({ salary_id: e?.salary_id })
+              .returning('*')
+              .execute();
+
+            return {
+              status: 201,
+              data: raw,
+              message: 'Salary successfully update',
+            };
+          }
+        }
+      }
+
       const { raw } = await Salary.createQueryBuilder()
         .insert()
         .into(Salary)
         .values({
-          salary_name: provinces.price,
+          salary_monthy: provinces.price,
           workers: workers_id,
         })
         .returning('*')
@@ -66,44 +88,44 @@ export class SalaryService {
         status: 201,
         data: raw,
         message: 'Salary successfully created',
-      };
+      } as any;
     } catch (error) {
       console.log(error.message);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
-  async salaryUpdate(param:any, req:any): Promise<response<Salary>> {
-    try {
-      const { salary_name } = req?.body;
-      if (!salary_name) {
-        throw new HttpException(
-          'salary_name is not found',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
+  // async salaryUpdate(param: any, req: any): Promise<response<Salary>> {
+  //   try {
+  //     const { salary_monthy } = req?.body;
+  //     if (!salary_monthy) {
+  //       throw new HttpException(
+  //         'salary_name is not found',
+  //         HttpStatus.BAD_REQUEST,
+  //       );
+  //     }
 
-      const { id } = param;
+  //     const { id } = param;
 
-      const { raw } = await Salary.createQueryBuilder()
-        .update(Salary)
-        .set({ salary_name })
-        .where({ salary_id: id })
-        .returning(['salary_name'])
-        .execute();
+  //     const { raw } = await Salary.createQueryBuilder()
+  //       .update(Salary)
+  //       .set({ salary_monthy })
+  //       .where({ salary_id: id })
+  //       .returning(['salary_name'])
+  //       .execute();
 
-      return {
-        status: HttpStatus.OK,
-        data: raw,
-        message: 'Salary successfully updated',
-      };
-    } catch (error) {
-      console.log(error.message);
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-    }
-  }
+  //     return {
+  //       status: HttpStatus.OK,
+  //       data: raw,
+  //       message: 'Salary successfully updated',
+  //     };
+  //   } catch (error) {
+  //     console.log(error.message);
+  //     throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+  //   }
+  // }
 
-  async salaryDelete(param:any): Promise<response<Salary>> {
+  async salaryDelete(param: any): Promise<response<Salary>> {
     try {
       const { id } = param;
 
@@ -111,7 +133,7 @@ export class SalaryService {
         .softDelete()
         .from(Salary)
         .where({ salary_id: id })
-        .returning(['salary_name'])
+        .returning('*')
         .execute();
 
       return {

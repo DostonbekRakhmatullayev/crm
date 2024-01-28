@@ -11,23 +11,30 @@ import {
 import { Workers } from './workers.entities';
 
 @Entity({
-  name: 'monthlymonth',
+  name: 'prize',
 })
-export class MonthlyMonth extends BaseEntity {
+export class Prize extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  monthlymonth_id: string;
+  prize_id: string;
 
   @Column({
-    name: 'monthly_month_money',
-    default: 0,
+    name: 'prize',
   })
-  monthlydaily_money: number;
+  prize: number;
+
+  @Column({
+    name: 'prize_text',
+  })
+  prize_text: string;
 
   @Column({
     name: 'isActive',
     default: 'isActive',
   })
   isActive: string;
+
+  @ManyToOne(() => Workers, (workers) => workers.prize)
+  workers: Workers;
 
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
@@ -37,7 +44,4 @@ export class MonthlyMonth extends BaseEntity {
 
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
-
-  @ManyToOne(() => Workers, (workers) => workers.monthlyMonth)
-  workers: Workers;
 }

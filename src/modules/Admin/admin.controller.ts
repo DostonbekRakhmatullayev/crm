@@ -9,7 +9,7 @@ import {
   UploadedFile,
   Delete,
   Res,
-  Body
+  Body,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AdminCreateDto } from './dto/admin.create.dto';

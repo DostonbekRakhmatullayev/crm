@@ -1,9 +1,11 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
-export class MonthlyDailyUpdateDto {
+export class DailyUpdateDto {
   @IsNumber()
+  @IsOptional()
   readonly advance: number;
 
   @IsString()
+  @IsOptional()
   readonly advance_name: string;
 }

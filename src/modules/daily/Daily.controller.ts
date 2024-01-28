@@ -8,13 +8,14 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { AdvanceCreateDto } from '../advance/dto/advance.create.dto';
-import { AdvanceUpdateDto } from '../advance/dto/advance.update.dto';
-import { DailyService } from './Daily.service';
 
-@Controller('/advance')
+import { DailyService } from './Daily.service';
+import { DailyCreateDto } from './dto/Daily.create.dto';
+import { DailyUpdateDto } from './dto/Daily.update.dto';
+
+@Controller('/daily')
 export class DailyController {
-  constructor(private readonly dailyService:DailyService) {}
+  constructor(private readonly dailyService: DailyService) {}
 
   @Get('/get')
   async findAll(@Req() req: Request) {
@@ -22,12 +23,12 @@ export class DailyController {
   }
 
   @Post('/create')
-  async dailyCreate(@Body() body: AdvanceCreateDto) {
+  async dailyCreate(@Body() body) {
     return await this.dailyService.dailyCreate(body);
   }
 
   @Put('/update/:id')
-  async advanceUpdate(@Param() param: string, @Body() body?: AdvanceUpdateDto) {
+  async advanceUpdate(@Param() param: string, @Body() body?: DailyUpdateDto) {
     return await this.dailyService.dailyUpdate(param, body);
   }
 

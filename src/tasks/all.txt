@@ -1,31 +1,50 @@
 admin == admin bir nechta buladi 1
 categories == categories 1
-provinces ==  viloyatlar 
-workers ==   ishchilar
-monthly == oylik ishchilardiki
-Kunlig oylik olaydiganlar
-monthly_daily ==  oylik har kuni   === Salary bunday uzgardi 
+provinces ==  viloyatlar 1
+workers ==  ishchilar 1
+
+monthly == oylik ishchilardiki   = Salary 1
+
+Kunlig oylik olaydiganlar 
+monthly_daily ==  oylik har kuni  = Daily 1
+
 Oy lik birik tiriladi shu oylikdi oladi
-monthly_month == oylik oylik olish
+monthly_month == oylik oylik olish  
+
 advance == avans 1
+                                                                                                                                                                    
+penalty == jarima 1
+
+price == oyliklar narxlar  1
+
+=====================
+admin == admin bir nechta buladi 
+
+categories == categories 
+
+provinces ==  viloyatlar 
+
+workers ==   ishchilar
+
+monthly == oylik ishchilardiki
+
+monthly_daily ==  oylik har kuni
+
+monthly_month == oylik oylik olish 
+
+
+advance == avans
+
 penalty == jarima
 
-price == oyliklar narxlar 
 
-provinces {
-  Toshkent = 'Toshkent',
-  Andijon = 'Andijon',
-  Buxoro = 'Buxoro',
-  Fargona = "Farg'ona",
-  Jizzax = 'Jizzax',
-  Xorazm = 'Xorazm',
-  Namangan = 'Namangan',
-  Navoiy = 'Navoiy',
-  Qashqadaryo = 'Qashqadaryo',
-  Samarqand = 'Samarqand',
-  Surxondaryo = 'Surxondaryo',
-  Qoraqalpogiston = "Qoraqalpog'iston",
-}
-
-
-
+1 categories hammasi tugadi
+2 admin hammasi tugadi
+3 provinces hammasi tugadi
+4 price hammasi tugadi
+5 penalty hammasi tugadi 
+6 advance hammasi tugadi 
+7 Salary oylik ishchilardiki hammasi tugadi
+8 workers                                                                                                                                                                                                                                                                                                                                                                             
+9 monthly_month oylik bir hil
+10 Daily kunlik oylik

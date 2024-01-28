@@ -1,11 +1,15 @@
 import { IsString, IsNumber, IsNotEmpty } from 'class-validator';
 
-export class DailyCreateDto {
+export class PrizeCreateDto {
   @IsNumber()
   @IsNotEmpty()
-  daily: number;
+  prize: number;
 
   @IsString()
   @IsNotEmpty()
-  workers: string;
+  prize_text: string;
+
+  @IsString()
+  @IsNotEmpty()
+  workers_id: string;
 }

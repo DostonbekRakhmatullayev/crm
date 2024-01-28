@@ -5,9 +5,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  OneToOne,
+  ManyToOne,
   BaseEntity,
   JoinColumn,
+  OneToOne,
 } from 'typeorm';
 import { Workers } from './workers.entities';
 
@@ -19,9 +20,9 @@ export class Salary extends BaseEntity {
   salary_id: string;
 
   @Column({
-    name: 'salary_name',
+    name: 'salary_monthy',
   })
-  salary_name: number;
+  salary_monthy: number;
 
   @Column({
     name: 'isActive',
@@ -39,6 +40,6 @@ export class Salary extends BaseEntity {
   updatedAt: Date;
 
   @OneToOne(() => Workers, (workers) => workers.salary)
-  @JoinColumn()
+  @JoinColumn({ name: 'worker_id' })
   workers: Workers;
 }

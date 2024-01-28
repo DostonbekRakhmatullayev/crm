@@ -18,6 +18,8 @@ import { Daily } from './daily.entities';
 import { Penalty } from './penalty.entites';
 import { Provinces } from './provinces.entities';
 import { MonthlyMonth } from './monthly.month.entities';
+import { Price } from './price.entities';
+import { Prize } from './prize.entities';
 // MonthlyMonth
 enum Gender {
   Male = 'male',
@@ -94,11 +96,14 @@ export class Workers extends BaseEntity {
   @OneToMany(() => Penalty, (penalty) => penalty.workers)
   penalty: Penalty[];
 
+  @OneToMany(() => Prize, (prize) => prize.workers)
+  prize: Prize[];
+
   @OneToMany(() => Advance, (advance) => advance.workers)
   advance: Advance[];
 
   @OneToOne(() => Salary, (salary) => salary.workers)
-  salary: Salary;
+  salary: Salary[];
 
   @ManyToOne(() => Categories, (categories) => categories.workers)
   categories: Categories;

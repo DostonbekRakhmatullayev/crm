@@ -8,6 +8,8 @@ import { Price } from 'src/entities/price.entities';
 import { Penalty } from 'src/entities/penalty.entites';
 import { Advance } from 'src/entities/advance.entities';
 import { Daily } from 'src/entities/daily.entities';
+import { MonthlyMonth } from 'src/entities/monthly.month.entities';
+import { Prize } from 'src/entities/prize.entities';
 export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
   useFactory: async () => {
     return {
@@ -28,6 +30,8 @@ export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
         Price,
         Penalty,
         Advance,
+        MonthlyMonth,
+        Prize,
       ],
       logging: false,
       synchronize: true,

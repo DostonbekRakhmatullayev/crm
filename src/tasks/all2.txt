@@ -1,0 +1,18 @@
+admin == admin bir nechta buladi 
+
+categories == categories 
+
+provinces ==  viloyatlar 
+
+workers ==   ishchilar
+
+monthly == oylik ishchilardiki
+
+monthly_daily ==  oylik har kuni
+
+monthly_month == oylik oylik olish 
+
+
+advance == avans
+
+penalty == jarima

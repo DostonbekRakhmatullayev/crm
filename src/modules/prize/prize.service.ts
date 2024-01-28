@@ -1,19 +1,21 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import { Advance } from 'src/entities/advance.entities';
 import { Penalty } from 'src/entities/penalty.entites';
 
 import { Price } from 'src/entities/price.entities';
+import { Prize } from 'src/entities/prize.entities';
 import { response } from 'src/types/interfaces';
 
 @Injectable()
-export class PenaltyService {
-  async findAll(): Promise<response<Penalty[]>> {
+export class PrizeService {
+  async findAll(): Promise<response<Prize[]>> {
     try {
-      const penalty = await Penalty.find();
+      const prize = await Prize.find();
 
       return {
         status: HttpStatus.OK,
-        data: penalty,
-        message: 'Penalties successfully fetched',
+        data: prize,
+        message: 'Prize successfully fetched',
       };
     } catch (error) {
       console.log(error.message);
@@ -21,24 +23,21 @@ export class PenaltyService {
     }
   }
 
-  async penaltyCreate(req: any): Promise<response<Penalty>> {
+  async prizeCreate(body: any): Promise<response<Prize>> {
     try {
-      const { penalty_name, penalty, workers } = req?.body;
-      const { raw } = await Penalty.createQueryBuilder()
+      const { prize, workers_id, prize_text } = body;
+
+      const { raw } = await Prize.createQueryBuilder()
         .insert()
-        .into(Penalty)
-        .values({
-          penalty_name,
-          penalty,
-          workers,
-        })
+        .into(Prize)
+        .values({ prize, workers: workers_id, prize_text })
         .returning('*')
         .execute();
 
       return {
-        status: 201,
+        status: HttpStatus.CREATED,
         data: raw,
-        message: 'Penalty created successfully',
+        message: 'Priza successfully created',
       };
     } catch (error) {
       console.log(error.message);
@@ -46,23 +45,23 @@ export class PenaltyService {
     }
   }
 
-  async penaltyUpdate(param: any, req: any): Promise<response<Penalty>> {
+  async prizeUpdate(param: any, body: any): Promise<response<Prize>> {
     try {
-      const { penalty, penalty_name } = req?.body;
+      const { prize, workers_id, prize_text } = body;
 
       const { id } = param;
 
-      const { raw } = await Penalty.createQueryBuilder()
-        .update(Penalty)
-        .set({ penalty, penalty_name })
-        .where({ penalty_id: id })
+      const { raw } = await Prize.createQueryBuilder()
+        .update(Prize)
+        .set({ prize, prize_text, workers: workers_id })
+        .where({ prize_id: id })
         .returning('*')
         .execute();
 
       return {
-        status: 200,
+        status: HttpStatus.OK,
         data: raw,
-        message: 'Penalty updated successfully',
+        message: 'Prize successfully updated',
       };
     } catch (error) {
       console.log(error.message);
@@ -70,21 +69,21 @@ export class PenaltyService {
     }
   }
 
-  async penaltyDelete(param: any): Promise<response<Penalty>> {
+  async prizeDelete(param: any): Promise<response<Prize>> {
     try {
       const { id } = param;
 
-      const { raw } = await Penalty.createQueryBuilder()
+      const { raw } = await Prize.createQueryBuilder()
         .softDelete()
-        .from(Penalty)
-        .where({ penalty_id: id })
+        .from(Prize)
+        .where({ prize_id: id })
         .returning('*')
         .execute();
 
       return {
         status: 200,
+        message: 'Prize successfully deleted',
         data: raw,
-        message: 'Penalty deleted successfully',
       };
     } catch (error) {
       console.log(error.message);

@@ -1,11 +1,11 @@
 import { Controller, Get, Req, Post, Put, Param, Delete } from '@nestjs/common';
 import { PricCreateDto } from './dto/pric.create.dto';
 import { PricUpdateDto } from './dto/pric.update.dto';
-import { PricServic } from './price.service';
+import { PricService } from './price.service';
 
 @Controller('/price')
 export class PricController {
-  constructor(private readonly pricServic: PricServic) {}
+  constructor(private readonly pricServic: PricService) {}
 
   @Get('/get')
   async findAll(@Req() req: Request) {

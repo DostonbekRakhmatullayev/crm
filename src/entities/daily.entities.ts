@@ -11,39 +11,31 @@ import {
 import { Workers } from './workers.entities';
 
 @Entity({
-  name: 'monthlydaily',
+  name: 'daily',
 })
 export class Daily extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   daily_id: string;
 
   @Column({
-    name: 'daily_name',
+    name: 'daily',
     default: 0,
   })
-  salary_name: number;
-
-  @Column({
-    name: 'daily_name',
-    default: 0,
-  })
-  daily_name: number;
-
-  @Column({
-    name: 'comment',
-    default: 0,
-  })
-  comment: string;
+  daily: number;
 
   @Column({
     name: 'isActive',
-    default: 'isActive',
+    default: false,
   })
-  isActive: string;
+  isActive: boolean;
 
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
 
+  // @Column({
+  //   type: 'date',
+  //   default: () => 'CURRENT_DATE',
+  // })
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 

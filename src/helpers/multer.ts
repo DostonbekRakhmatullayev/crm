@@ -28,8 +28,6 @@ export const multerOptions = {
   storage: diskStorage({
     // Destination storage path details
     destination: (req: any, file: any, cb: any) => {
-      // console.log(file);
-
       const uploadPath = resolve('uploads');
       // Create folder if doesn't exist
       if (!existsSync(uploadPath)) {
@@ -39,7 +37,6 @@ export const multerOptions = {
     },
     // File modification details
     filename: (req: any, file: any, cb: any) => {
-      // console.log(file);
       // Calling the callback passing the random name generated with the original extension name
       cb(null, Date.now() + file.originalname);
     },
